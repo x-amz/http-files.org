@@ -1,0 +1,83 @@
+---
+title: Protocols
+description: WebSocket, gRPC, Server-Sent Events, MQTT, and AMQP support.
+---
+
+Several implementations extend the `.http` format beyond standard HTTP requests.
+
+## WebSocket
+
+{% syntax-example feature="websocket" /%}
+
+**JetBrains** uses the `WEBSOCKET` keyword:
+
+```http
+WEBSOCKET ws://localhost:8080/ws
+
+{"message": "Hello"}
+===
+{"message": "World"}
+=== wait-for-server
+{"message": "After server response"}
+```
+
+The `===` separator delimits multiple messages. `=== wait-for-server` pauses until a server message is received.
+
+**httpyac** uses the `WS` or `WSS` keyword with `{{@streaming}}` script blocks for programmatic message sending. `# @keepStreaming` keeps connections alive.
+
+**kulala.nvim** supports WebSocket via `WEBSOCKET` or `WS` keywords.
+
+VS Code REST Client does not support WebSocket.
+
+## gRPC
+
+**JetBrains** uses the `GRPC` keyword. Requires Protocol Buffers plugin:
+
+```http
+GRPC localhost:8080/com.example.UserService/GetUser
+
+{"id": "123"}
+```
+
+**httpyac** uses `GRPC` with proto file loading (`proto < ./service.proto`) or gRPC reflection (`# @grpc-reflection`). Supports all four RPC types (unary, server streaming, client streaming, bidirectional).
+
+**kulala.nvim** supports gRPC with `# @grpc-...` configuration flags.
+
+## Server-Sent Events
+
+{% supported clients="httpyac" /%}
+
+```http
+SSE https://example.com/events
+```
+
+Uses `SSE` or `EVENTSOURCE` keyword. JetBrains handles SSE through stream response processing in scripts (partial support).
+
+## MQTT
+
+{% supported clients="httpyac" /%}
+
+```http
+MQTT tcp://broker.hivemq.com
+Topic: httpyac
+
+Hello, World
+```
+
+Supports publish, subscribe, QoS, retain, and authentication headers.
+
+## AMQP/RabbitMQ
+
+{% supported clients="httpyac" /%}
+
+```http
+AMQP amqp://guest:guest@localhost
+amqp_method: publish
+amqp_exchange: my_exchange
+
+{"event": "test"}
+```
+
+Supports publish, consume, ack, nack, cancel, purge, declare, bind, unbind, delete operations.
+
+{% support-table category="protocols" /%}

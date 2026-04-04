@@ -1,0 +1,19 @@
+---
+/**
+ * Grid layout for client cards.
+ * Usage in Markdoc: {% client-grid %} ... {% /client-grid %}
+ */
+---
+
+<div class="client-grid">
+	<slot />
+</div>
+
+<style>
+	.client-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 1rem;
+		margin: 1.5rem 0;
+	}
+</style>

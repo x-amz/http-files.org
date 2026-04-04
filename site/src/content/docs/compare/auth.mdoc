@@ -1,0 +1,38 @@
+---
+title: Auth & Security Comparison
+description: Authentication helpers, SSL configuration, and security features across clients.
+---
+
+{% support-table category="auth" /%}
+
+## Authentication methods by portability
+
+{% interop level="universal" %}
+**Basic authentication** with automatic Base64 encoding works everywhere.
+{% /interop %}
+
+{% interop level="widespread" %}
+**Digest authentication** is supported by VS Code REST Client, JetBrains, httpyac, and kulala.nvim.
+{% /interop %}
+
+{% interop level="limited" %}
+**AWS Signature v4** is supported by VS Code REST Client, httpyac, and kulala.nvim. Not available in JetBrains or VS 2022.
+{% /interop %}
+
+{% interop level="unique" %}
+**OAuth2 full grant support** is only available in httpyac. Other clients offer partial OAuth support through different mechanisms (Azure AD tokens in VS Code, IDE dialogs in JetBrains).
+{% /interop %}
+
+## SSL client certificates
+
+Every client that supports SSL certificates uses a different configuration format:
+
+- **VS Code REST Client**: `settings.json` under `rest-client.certificates`
+- **JetBrains**: `http-client.private.env.json` under `SSLConfiguration`
+- **httpyac**: `httpyac.config.js` under `clientCertificates`
+
+See {% spec-ref section="16" /%} for full details.
+
+## Cookie handling
+
+All clients handle cookies automatically. The `@no-cookie-jar` metadata tag is universal for disabling per-request cookie storage.

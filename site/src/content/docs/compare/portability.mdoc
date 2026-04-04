@@ -1,0 +1,88 @@
+---
+title: Portability Guide
+description: How to write .http files that work across all clients — and when to target a specific one.
+---
+
+## The portable core
+
+For maximum cross-tool compatibility, stick to these features:
+
+```http
+### Request name as comment
+# Variables
+@host = api.example.com
+@token = my-auth-token
+
+### GET request
+GET https://api.example.com/api/users
+Accept: application/json
+Authorization: Bearer token-value
+
+### POST with JSON body
+POST https://api.example.com/api/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+Specifically:
+- Standard HTTP methods (`GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`)
+- `###` separators (with no text after them for full portability)
+- `#` or `//` comments
+- `@var = value` variable definitions
+- Variable substitution with double curly braces
+- `< filepath` file includes (except VS 2022)
+
+## Environment portability
+
+Use `http-client.env.json` for environments. It's supported by 4 of 5 primary clients:
+
+```json
+{
+  "development": {
+    "host": "localhost:3000",
+    "token": "dev-token"
+  },
+  "production": {
+    "host": "api.example.com",
+    "token": "prod-token"
+  }
+}
+```
+
+VS Code REST Client is the outlier — it uses `settings.json`. If you need VS Code compatibility, either:
+1. Use httpyac as your VS Code client (it reads `http-client.env.json`)
+2. Maintain both formats
+
+## When to target a specific client
+
+Some features are only available in specific clients. When you use them, document which client is required.
+
+### Feature targeting guide
+
+| If you need... | Target |
+|---|---|
+| Response handler scripts | JetBrains, httpyac, or kulala |
+| Pre-request scripts | JetBrains, httpyac, or kulala |
+| Compact assertions (`??`) | httpyac |
+| GraphQL | JetBrains (`GRAPHQL` keyword) or httpyac (auto-detect) |
+| WebSocket | JetBrains, httpyac, or kulala |
+| gRPC | JetBrains, httpyac, or kulala |
+| OAuth2 (full) | httpyac |
+| AWS auth | VS Code REST Client, httpyac, or kulala |
+| Azure secrets | VS 2022 |
+| Code generation | VS Code REST Client |
+| CI/CD | ijhttp (JetBrains CLI) or httpyac CLI |
+
+## httpyac as a compatibility bridge
+
+httpyac supports both JetBrains and VS Code REST Client syntax while adding its own extensions. If your team uses mixed editors, httpyac-compatible `.http` files are the closest thing to a universal format.
+
+## What this site is working toward
+
+The `.http` format lacks a formal standard. This site documents what exists across all implementations and highlights where they diverge. The long-term goal is to help the community converge on a shared specification that preserves the format's simplicity while reducing unnecessary incompatibilities.
+
+If you maintain an `.http` file client and want to contribute to this effort, the [compatibility data](https://github.com/http-files) is open for pull requests.

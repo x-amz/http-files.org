@@ -1,0 +1,70 @@
+---
+title: The .http File Format
+description: Define, share, and execute HTTP requests in plain text. One format, every tool.
+template: splash
+hero:
+  tagline: Define, share, and execute HTTP requests in plain text. One format, every tool.
+  image:
+    file: ../../assets/hero-icon.svg
+  actions:
+    - text: Read the Spec
+      link: /spec/basics/
+      icon: right-arrow
+      variant: primary
+    - text: Choose a Client
+      link: /guides/choose-a-client/
+      variant: minimal
+    - text: Compare Features
+      link: /compare/overview/
+      variant: minimal
+---
+
+{% aside type="tip" %}
+The `.http` file format is supported by **15+ tools** across IDEs, editors, CLIs, and parser libraries — but no formal RFC exists. This site is the neutral home for the format: a living specification, a cross-client compatibility reference, and a directory of every implementation.
+{% /aside %}
+
+## The simplest way to define an HTTP request
+
+```http
+### Get all users
+GET https://api.example.com/users
+Accept: application/json
+
+### Create a new user
+POST https://api.example.com/users
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com"
+}
+```
+
+That's it. A plain text file. No SDK, no GUI, no config files. Save it as `.http`, open it in your editor, and run it.
+
+## Why .http files?
+
+- **Readable.** HTTP requests described in HTTP syntax. No abstraction layer.
+- **Shareable.** Commit them to your repo. Review them in PRs. Run them in CI.
+- **Portable.** Supported by VS Code, JetBrains IDEs, Neovim, Visual Studio, and CLI tools.
+- **Composable.** Variables, environments, response chaining, and scripting — when you need them.
+
+## The ecosystem at a glance
+
+{% support-table category="core" /%}
+
+Explore the full [compatibility reference](/compare/overview/) for detailed feature-by-feature comparison across all clients.
+
+## Get started
+
+Pick your editor and start sending requests in minutes:
+
+{% client-grid %}
+{% client-card id="vscode" /%}
+{% client-card id="jetbrains" /%}
+{% client-card id="httpyac" /%}
+{% client-card id="vs2022" /%}
+{% client-card id="kulala" /%}
+{% /client-grid %}
+
+See all [clients and tools](/clients/overview/).

@@ -1,0 +1,30 @@
+---
+title: Protocols & Extensions Comparison
+description: Support for GraphQL, WebSocket, gRPC, SSE, MQTT, and AMQP across clients.
+---
+
+{% support-table category="protocols" /%}
+
+## GraphQL: three approaches
+
+| Approach | Client |
+|---|---|
+| `X-REQUEST-TYPE: GraphQL` header | VS Code REST Client |
+| `GRAPHQL` method keyword | JetBrains, kulala.nvim |
+| Auto-detection in POST body | httpyac |
+
+These are mutually incompatible. There is no portable GraphQL syntax.
+
+## Protocol support tiers
+
+{% interop level="widespread" %}
+**WebSocket** — supported by JetBrains (`WEBSOCKET`), httpyac (`WS`/`WSS`), and kulala.nvim. Different keywords but similar functionality.
+{% /interop %}
+
+{% interop level="widespread" %}
+**gRPC** — supported by JetBrains, httpyac, and kulala.nvim. httpyac offers the most complete support with all four RPC types.
+{% /interop %}
+
+{% interop level="unique" %}
+**SSE, MQTT, AMQP** — httpyac only. These protocol extensions are not available in any other client.
+{% /interop %}

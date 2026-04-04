@@ -1,0 +1,81 @@
+---
+title: Authentication
+description: Built-in authentication helpers — Basic, Digest, AWS, OAuth, and client certificates.
+---
+
+## Basic authentication
+
+All major implementations support automatic Base64 encoding for Basic auth:
+
+```http
+GET https://api.example.com/protected
+Authorization: Basic username password
+```
+
+{% supported clients="vscode,jetbrains,httpyac,kulala" /%}
+
+VS 2022 does not document automatic Base64 encoding for Basic auth.
+
+VS Code REST Client also accepts `username:password` (colon-separated) or pre-encoded Base64 values.
+
+## Digest authentication
+
+```http
+GET https://api.example.com/protected
+Authorization: Digest username password
+```
+
+{% supported clients="vscode,jetbrains,httpyac" /%}
+
+The client handles the challenge-response flow automatically.
+
+## AWS Signature v4
+
+```http
+GET https://service.amazonaws.com/resource
+Authorization: AWS accessKeyId secretAccessKey token:sessionToken region:us-east-1 service:s3
+```
+
+{% supported clients="vscode,httpyac,kulala" /%}
+
+JetBrains does not have built-in AWS auth.
+
+## AWS Cognito
+
+{% supported clients="vscode" /%}
+
+```http
+GET https://api.example.com/protected
+Authorization: COGNITO username password region userPoolId clientId
+```
+
+Unique to VS Code REST Client.
+
+## OAuth 2.0 / OpenID Connect
+
+**httpyac** has the most comprehensive OAuth2 support with multiple grant types:
+
+```http
+GET https://api.example.com/protected
+Authorization: openid client_credentials myPrefix
+```
+
+Supported flows: `authorization_code` (with optional PKCE), `implicit`, `password`, `client_credentials`, `device_code`, and token exchange. Variables configure endpoints: `{{prefix}}_tokenEndpoint`, `{{prefix}}_clientId`, etc.
+
+**VS Code REST Client** supports Azure AD tokens via `{{$aadToken}}`, `{{$aadV2Token}}`, and generic OIDC via `{{$oidcAccessToken}}`.
+
+**JetBrains** supports OAuth 2.0 through IDE-integrated dialogs rather than in-file syntax.
+
+**kulala.nvim** supports OAuth2, Negotiate, and SSL auth.
+
+## NTLM/Kerberos
+
+{% supported clients="jetbrains,kulala" /%}
+
+JetBrains uses `@use-os-credentials` metadata to use OS-level credentials.
+
+## Client certificates
+
+See {% spec-ref section="16" /%} for SSL/certificate configuration details.
+
+{% support-table category="auth" /%}

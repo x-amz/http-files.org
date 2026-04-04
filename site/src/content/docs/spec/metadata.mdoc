@@ -1,0 +1,77 @@
+---
+title: Metadata & Annotations
+description: Request metadata tags that modify behavior — naming, redirects, timeouts, and more.
+---
+
+Metadata tags are comment lines containing `@` directives that modify request behavior. The comment prefix can be `#` or `//`.
+
+## Request naming
+
+Naming a request enables response chaining and identification:
+
+```http
+# @name login
+POST https://api.example.com/auth
+Content-Type: application/json
+
+{"username": "admin", "password": "secret"}
+```
+
+| Client | Syntax |
+|---|---|
+| VS Code REST Client | `# @name requestName` |
+| JetBrains | `# @name requestName` or text after `###` |
+| httpyac | `# @name requestName` or `### requestName` |
+| VS 2022 | `# @name requestName` |
+| kulala.nvim | `# @name requestName` or `### requestName` |
+
+## Common metadata tags
+
+| Tag | VS Code | JetBrains | httpyac | kulala | Description |
+|---|---|---|---|---|---|
+| `@name` | Yes | Yes | Yes | Yes | Name the request |
+| `@no-redirect` | Yes | Yes | Yes | Yes | Disable redirect following |
+| `@no-cookie-jar` | Yes | Yes | Yes | Yes | Disable cookie saving |
+| `@note` | Yes | No | No | No | Confirmation prompt before sending |
+| `@no-log` | No | Yes | No | No | Prevent saving to request history |
+| `@timeout` | No | Yes | Yes | No | Request timeout |
+| `@connection-timeout` | No | Yes | No | No | Connection timeout |
+
+## JetBrains-specific metadata
+
+- `@no-log` — prevent saving request to `.idea/httpRequests/` history
+- `@timeout N [unit]` — read timeout (default: 60s; units: `ms`, `s`, `m`)
+- `@connection-timeout N [unit]` — connection timeout
+- `@no-auto-encoding` — disable automatic URL/parameter encoding
+- `@use-os-credentials` — use OS-level NTLM/Kerberos credentials
+
+## httpyac-specific metadata
+
+httpyac defines the richest set of metadata:
+
+- `@ref requestName` — declare dependency on another named request
+- `@forceRef requestName` — always re-execute the referenced request
+- `@import ./path.http` — import requests/variables from another file
+- `@disabled` — skip this request during batch execution
+- `@loop for item of collection` / `@loop for N` / `@loop while expr` — repeat the request
+- `@sleep N` — wait N milliseconds before executing
+- `@jwt propertyName` — auto-decode JWT token from response
+- `@save` — save response body to a file
+- `@ratelimit minIdleTime N` / `@ratelimit max N expire: N` — throttle requests
+- `@proxy http://host:port` — per-request proxy setting
+- `@no-reject-unauthorized` — accept self-signed SSL certificates
+- `@no-client-cert` — skip SSL client certificate
+- `@keepStreaming` — keep streaming connections alive
+- `@injectVariables` — inject variables in request body (JetBrains compatibility)
+- `@debug` / `@verbose` — enable detailed logging
+
+## kulala.nvim-specific metadata
+
+- `@prompt variable-name prompt-string` — prompt for input
+- `@secret variable-name prompt-string` — prompt with masked input
+- `@delay N` — delay before sending
+- `@curl-...` — pass custom curl flags
+- `@grpc-...` — set gRPC configuration flags
+- `@jq expression` — filter response body with jq
+- `@env-json-key` — extract environment variable from response JSON
+- `@env-header-key` — extract environment variable from response header

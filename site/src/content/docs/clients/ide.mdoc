@@ -1,0 +1,42 @@
+---
+title: IDE Extensions
+description: .http file support in VS Code, JetBrains IDEs, Visual Studio 2022, and more.
+---
+
+## VS Code REST Client
+
+{% client-card id="vscode" /%}
+
+The originator of the `.http` file format (circa 2017). Install from the VS Code marketplace by searching for "REST Client" by Huachao Mao.
+
+**Key strengths**: Code generation to 30+ languages, Azure AD token support, percent-encoding variables, cURL import/export.
+
+**Limitations**: No scripting, no response handler scripts, no cross-file imports. Environments are configured in VS Code `settings.json` rather than standalone files.
+
+## JetBrains HTTP Client
+
+{% client-card id="jetbrains" /%}
+
+Built into all JetBrains IDEs — no extension to install. Available in IntelliJ IDEA, WebStorm, GoLand, PyCharm, Rider, PhpStorm, CLion, and others.
+
+**Key strengths**: Most feature-rich IDE implementation. Pre-request scripts, response handlers, Crypto API, Faker-based random data, WebSocket, gRPC, GraphQL keyword, Postman import, response comparison (`<>`).
+
+Also available as a standalone CLI (`ijhttp`) for CI/CD use.
+
+## httpyac
+
+{% client-card id="httpyac" /%}
+
+Both a VS Code extension and a CLI tool. The most interoperable implementation — supports both JetBrains and REST Client syntax while adding its own extensions.
+
+**Key strengths**: Broadest compatibility bridge, full Node.js scripting, `??` assertion syntax, OAuth2 with all grant types, protocol extensions (WebSocket, gRPC, SSE, MQTT, AMQP), cross-file imports, loop/sleep/ratelimit.
+
+## Visual Studio 2022
+
+{% client-card id="vs2022" /%}
+
+Built-in since v17.6, significantly enhanced in v17.8+. Uses the JetBrains `http-client.env.json` format with Microsoft extensions.
+
+**Key strengths**: Azure Key Vault and ASP.NET User Secrets integration, Endpoints Explorer auto-generation, HTTP/3 support, debug link integration.
+
+**Limitations**: No multi-line URLs, no file includes, no multipart form data, no scripting, no GraphQL, no WebSocket/gRPC.

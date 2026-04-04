@@ -1,0 +1,414 @@
+# Feature compatibility data
+# This is the DSL that contributors edit to update comparison tables.
+# Each category maps to a comparison page; each feature tracks support per client.
+#
+# Support values:
+#   true     — fully supported
+#   false    — not supported
+#   partial  — partial or limited support
+#   "syntax" — supported with different syntax (see notes)
+#
+# The five primary clients tracked in comparison tables:
+#   vscode, jetbrains, httpyac, vs2022, kulala
+
+categories:
+  core:
+    title: Core Syntax
+    description: Fundamental request syntax supported by all implementations.
+    features:
+      - id: request-line
+        name: "Request line (METHOD URL [HTTP-version])"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: method-default-get
+        name: "Method defaults to GET when omitted"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: multi-line-urls
+        name: "Multi-line URLs via indentation"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "Continuation lines beginning with whitespace are concatenated to the URL."
+
+      - id: http2
+        name: "HTTP/2 version"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        notes: "VS Code REST Client does not document HTTP/2 support."
+
+      - id: http2-prior-knowledge
+        name: "HTTP/2 (Prior Knowledge)"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+        notes: "Direct HTTP/2 without upgrade negotiation."
+
+      - id: http3
+        name: "HTTP/3 version"
+        support: { vscode: false, jetbrains: false, httpyac: false, vs2022: true, kulala: false }
+        notes: "Unique to Visual Studio 2022."
+
+      - id: request-separator
+        name: "Request separator (###)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: line-comments-hash
+        name: "Line comments (#)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: line-comments-slash
+        name: "Line comments (//)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: block-comments
+        name: "Block comments (/* */)"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Unique to httpyac."
+
+      - id: separator-title
+        name: "Text after ### as request title"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: headers
+        name: "Request headers (Name: Value)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: multiline-header-values
+        name: "Multi-line header values via indentation"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: false }
+
+      - id: spread-headers
+        name: "Spread headers (...variableName)"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Injects all key-value pairs from an object variable as headers."
+
+      - id: request-body
+        name: "Request body after blank line"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: urlencoded-multiline
+        name: "URL-encoded form body with & prefixes"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+  variables:
+    title: Variables & Environments
+    description: Variable definition, substitution, scoping, and environment configuration.
+    features:
+      - id: inline-variables
+        name: "Inline variable definition (@var = value)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: variable-substitution
+        name: "Variable substitution ({{variableName}})"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        universal: true
+
+      - id: percent-encoding
+        name: "Percent-encoding substitution ({{%var}})"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+        notes: "URL-encodes the variable value. Unique to VS Code REST Client."
+
+      - id: lazy-variables
+        name: "Lazy variables (@var := value)"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Evaluated at execution time rather than parse time."
+
+      - id: named-request-variables
+        name: "Named request response chaining"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        notes: "Syntax differs: VS Code uses dot-path ({{name.response.body.$.path}}), JetBrains uses script-based global variables, httpyac uses @ref."
+
+      - id: env-settings-json
+        name: "Environments in settings.json"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+
+      - id: env-http-client-json
+        name: "http-client.env.json"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+
+      - id: env-private-json
+        name: "http-client.private.env.json"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: env-user-json
+        name: "http-client.env.json.user"
+        support: { vscode: false, jetbrains: false, httpyac: false, vs2022: true, kulala: false }
+        notes: "Microsoft-specific override file."
+
+      - id: env-dotenv
+        name: ".env dotenv files"
+        support: { vscode: partial, jetbrains: false, httpyac: true, vs2022: partial, kulala: true }
+        notes: "VS Code REST Client and VS 2022 support via {{$dotenv NAME}} accessor. httpyac and kulala parse .env files natively."
+
+      - id: env-js-config
+        name: "JS/JSON config file"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "httpyac.config.js or .httpyac.js"
+
+      - id: env-shared
+        name: "$shared environment"
+        support: { vscode: true, jetbrains: false, httpyac: true, vs2022: true, kulala: false }
+
+      - id: env-secrets-providers
+        name: "Secrets providers (Azure Key Vault, etc.)"
+        support: { vscode: false, jetbrains: false, httpyac: false, vs2022: true, kulala: false }
+        notes: "ASP.NET Core User Secrets, Azure Key Vault, DPAPI."
+
+  dynamic-variables:
+    title: Dynamic Variables
+    description: Built-in variables that generate values at request time.
+    features:
+      - id: uuid
+        name: "UUID v4"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS Code: {{$guid}}, JetBrains: {{$uuid}}, httpyac: both syntaxes. VS 2022 does not document UUID generation."
+
+      - id: timestamp
+        name: "Unix timestamp"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        notes: "{{$timestamp}} — universal syntax."
+        universal: true
+
+      - id: random-int
+        name: "Random integer"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: true }
+        notes: "VS Code: {{$randomInt min max}}, JetBrains: {{$randomInt}} (0-1000)."
+        universal: true
+
+      - id: datetime
+        name: "Datetime formatting"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: false }
+        notes: "VS Code: {{$datetime format}}, JetBrains: {{$isoTimestamp}}."
+
+      - id: random-data
+        name: "Random data (Faker-based)"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+        notes: "Java Faker: $random.name, $random.address, $random.lorem, etc."
+
+      - id: process-env
+        name: "OS environment variables"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: true, kulala: false }
+        notes: "VS Code: {{$processEnv NAME}}, JetBrains: {{$env.NAME}}."
+
+      - id: prompt-input
+        name: "User prompt for input"
+        support: { vscode: true, jetbrains: false, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS Code: @prompt, httpyac: {{$input prompt}}, kulala: @prompt."
+
+      - id: azure-ad-tokens
+        name: "Azure AD / OIDC tokens"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+        notes: "{{$aadToken}}, {{$aadV2Token}}, {{$oidcAccessToken}}."
+
+  scripting:
+    title: Scripting & Testing
+    description: Pre-request scripts, response handlers, and assertion syntax.
+    features:
+      - id: response-handler-jetbrains
+        name: "Response handler scripts (> {% %})"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "httpyac supports for JetBrains compatibility."
+
+      - id: response-handler-httpyac
+        name: "Response handler scripts ({{ }})"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "httpyac-native syntax with full Node.js require() access."
+
+      - id: pre-request-jetbrains
+        name: "Pre-request scripts (< {% %})"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: true }
+
+      - id: pre-request-httpyac
+        name: "Pre-request scripts ({{ }} before request)"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+
+      - id: assertion-syntax
+        name: "Assertion syntax (?? status == 200)"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Supports status, header, body, duration, js, xpath assertions."
+
+      - id: client-test-api
+        name: "client.test() API"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: crypto-api
+        name: "Crypto API in scripts"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+        notes: "crypto.hmac.sha256(), crypto.sha256(), etc."
+
+      - id: lua-scripting
+        name: "Lua scripting"
+        support: { vscode: false, jetbrains: false, httpyac: false, vs2022: false, kulala: true }
+        notes: "> {% --lua ... %}. Unique to kulala.nvim."
+
+      - id: external-handler-file
+        name: "External response handler file (> filepath.js)"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+
+      - id: event-hooks
+        name: "Event-specific script hooks"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "{{@request}}, {{@streaming}}, {{@response}}, {{@responseLogging}}, {{@after}}."
+
+      - id: global-script-registration
+        name: "Global script registration ({{+...}})"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Registers scripts to execute across all requests. {{+after}} runs after every request."
+
+      - id: test-helpers
+        name: "Built-in test helpers (test.status(), test.header())"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "test.status(), test.totalTime(), test.header(), test.headerContains(), test.responseBody(), etc."
+
+  file-operations:
+    title: File Operations
+    description: External file includes, response saving, and cross-file references.
+    features:
+      - id: file-include
+        name: "Body from external file (< filepath)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: file-include-vars
+        name: "File include with variable substitution (<@ filepath)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "JetBrains resolves variables by default; VS Code and httpyac require <@."
+
+      - id: file-include-encoding
+        name: "File include with encoding (<@encoding filepath)"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+
+      - id: response-save
+        name: "Save response to file (>>)"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: response-overwrite
+        name: "Overwrite response file (>>!)"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: response-reference
+        name: "Response comparison reference (<>)"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+        notes: "Compare current response against a saved file."
+
+      - id: multipart-form
+        name: "Multipart form data with boundary"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: import-run
+        name: "Import/run from other .http files"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "JetBrains: import/run syntax. httpyac: @import/@ref. kulala: JetBrains-compatible."
+
+  protocols:
+    title: Protocols & Extensions
+    description: Support for protocols beyond standard HTTP.
+    features:
+      - id: graphql-header
+        name: "GraphQL via X-REQUEST-TYPE header"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+
+      - id: graphql-keyword
+        name: "GraphQL via GRAPHQL keyword"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: true }
+
+      - id: graphql-autodetect
+        name: "GraphQL auto-detection"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+
+      - id: websocket
+        name: "WebSocket"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "JetBrains: WEBSOCKET keyword. httpyac: WS/WSS keyword."
+
+      - id: grpc
+        name: "gRPC"
+        support: { vscode: false, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "httpyac supports all four RPC types."
+
+      - id: sse
+        name: "Server-Sent Events"
+        support: { vscode: false, jetbrains: partial, httpyac: true, vs2022: false, kulala: false }
+        notes: "JetBrains: via script processing. httpyac: SSE/EVENTSOURCE keyword."
+
+      - id: mqtt
+        name: "MQTT"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Unique to httpyac."
+
+      - id: amqp
+        name: "AMQP/RabbitMQ"
+        support: { vscode: false, jetbrains: false, httpyac: true, vs2022: false, kulala: false }
+        notes: "Unique to httpyac."
+
+  auth:
+    title: Authentication & Security
+    description: Built-in authentication helpers and security configuration.
+    features:
+      - id: basic-auth
+        name: "Basic authentication (auto Base64 encoding)"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS 2022 does not document automatic Base64 encoding for Basic auth."
+
+      - id: digest-auth
+        name: "Digest authentication"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+
+      - id: aws-sig-v4
+        name: "AWS Signature v4"
+        support: { vscode: true, jetbrains: false, httpyac: true, vs2022: false, kulala: true }
+
+      - id: aws-cognito
+        name: "AWS Cognito"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+        notes: "Unique to VS Code REST Client."
+
+      - id: oauth2
+        name: "OAuth 2.0 / OpenID Connect"
+        support: { vscode: partial, jetbrains: partial, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS Code: Azure AD tokens. JetBrains: IDE dialogs. httpyac: full grant type support."
+
+      - id: ntlm
+        name: "NTLM/Kerberos"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: true }
+        notes: "JetBrains: @use-os-credentials."
+
+      - id: ssl-client-cert
+        name: "SSL client certificates"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: false }
+        notes: "Each uses different config format. See SSL & Certificates spec."
+
+      - id: no-redirect
+        name: "@no-redirect"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS 2022 does not document metadata tags beyond @name."
+
+      - id: no-cookie-jar
+        name: "@no-cookie-jar"
+        support: { vscode: true, jetbrains: true, httpyac: true, vs2022: false, kulala: true }
+        notes: "VS 2022 does not document metadata tags beyond @name."
+
+  curl:
+    title: cURL & Import/Export
+    description: cURL compatibility and collection import capabilities.
+    features:
+      - id: curl-import
+        name: "Import/parse cURL commands"
+        support: { vscode: true, jetbrains: true, httpyac: false, vs2022: false, kulala: true }
+
+      - id: curl-export
+        name: "Export/copy as cURL"
+        support: { vscode: true, jetbrains: true, httpyac: false, vs2022: false, kulala: false }
+
+      - id: postman-import
+        name: "Postman collection import"
+        support: { vscode: false, jetbrains: true, httpyac: false, vs2022: false, kulala: true }
+
+      - id: code-generation
+        name: "Code generation (multiple languages)"
+        support: { vscode: true, jetbrains: false, httpyac: false, vs2022: false, kulala: false }
+        notes: "VS Code REST Client: 30+ languages via httpsnippet."

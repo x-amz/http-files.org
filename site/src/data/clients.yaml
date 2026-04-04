@@ -1,0 +1,192 @@
+# Client/implementation registry
+# This is the single source of truth for all .http file implementations.
+# Comparison tables, client cards, and support badges all render from this data.
+
+clients:
+  vscode:
+    name: VS Code REST Client
+    shortName: VS Code
+    author: Huachao Mao
+    type: ide
+    platform: VS Code
+    language: TypeScript
+    repo: https://github.com/Huachao/vscode-restclient
+    docs: https://github.com/Huachao/vscode-restclient#readme
+    description: >
+      The originator of the .http file format (circa 2017). VS Code extension
+      with ~6K GitHub stars. Supports HTTP requests, variables, environments,
+      and response viewing with rich editor integration.
+    icon: vscode
+
+  jetbrains:
+    name: JetBrains HTTP Client
+    shortName: JetBrains
+    author: JetBrains
+    type: ide
+    platform: IntelliJ IDEA, WebStorm, GoLand, PyCharm, Rider
+    language: Kotlin/Java
+    repo: https://github.com/JetBrains/http-request-in-editor-spec
+    docs: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+    cli: https://www.jetbrains.com/help/idea/http-client-cli.html
+    description: >
+      Built into all JetBrains IDEs. The most feature-rich IDE implementation,
+      with the only semi-formal spec attempt. Also available as a standalone CLI (ijhttp).
+    icon: jetbrains
+
+  httpyac:
+    name: httpyac
+    shortName: httpyac
+    author: Andreas Weber
+    type: ide
+    platform: VS Code, CLI
+    language: TypeScript/Node.js
+    repo: https://github.com/AnWeber/httpyac
+    docs: https://httpyac.github.io/
+    description: >
+      The most interoperable implementation. CLI tool and VS Code extension that
+      supports both JetBrains and REST Client syntax while adding its own extensions.
+      Bridges the gap between ecosystems.
+    icon: httpyac
+
+  vs2022:
+    name: Visual Studio 2022
+    shortName: VS 2022
+    author: Microsoft
+    type: ide
+    platform: Visual Studio 2022
+    language: C#
+    docs: https://learn.microsoft.com/en-us/aspnet/core/test/http-files
+    description: >
+      Built-in since v17.6, significantly enhanced in v17.8+. Adopted JetBrains
+      env format with Microsoft extensions including Azure Key Vault secrets providers.
+    icon: vs2022
+
+  kulala:
+    name: kulala.nvim
+    shortName: kulala
+    author: Mistweaverco
+    type: neovim
+    platform: Neovim
+    language: Lua
+    repo: https://github.com/mistweaverco/kulala.nvim
+    docs: https://kulala.mwco.app/
+    description: >
+      Neovim plugin targeting 100% IntelliJ compatibility. Includes kulala-fmt
+      formatter, kulala-ls language server, and a CLI with GitHub Action support.
+    icon: kulala
+
+  rest-nvim:
+    name: rest.nvim
+    shortName: rest.nvim
+    author: rest-nvim
+    type: neovim
+    platform: Neovim
+    language: Lua
+    repo: https://github.com/rest-nvim/rest.nvim
+    docs: https://github.com/rest-nvim/rest.nvim#readme
+    description: >
+      Neovim plugin using tree-sitter for parsing. Revived after being archived.
+
+  ijhttp:
+    name: JetBrains ijhttp CLI
+    shortName: ijhttp
+    author: JetBrains
+    type: cli
+    platform: CLI (JDK 21+)
+    language: Kotlin/Java
+    docs: https://www.jetbrains.com/help/idea/http-client-cli.html
+    description: >
+      Official CLI for running .http files from CI/CD pipelines. Available as
+      Docker image (jetbrains/intellij-http-client). Requires JDK 21+.
+
+  httpyac-cli:
+    name: httpyac CLI
+    shortName: httpyac CLI
+    author: Andreas Weber
+    type: cli
+    platform: CLI (Node.js)
+    language: TypeScript/Node.js
+    repo: https://github.com/AnWeber/httpyac
+    docs: https://httpyac.github.io/guide/installation_cli
+    description: >
+      npm install -g httpyac. Supports --json, --junit output, --bail,
+      --repeat with parallel mode.
+
+  httprunner:
+    name: httprunner
+    shortName: httprunner
+    author: Christian Helle
+    type: cli
+    platform: CLI, TUI, GUI
+    language: Rust
+    repo: https://github.com/chelle-helle/httprunner
+    description: >
+      Rust-based CLI/TUI/GUI supporting both JetBrains and REST Client syntax,
+      http-client.env.json, and HTML/Markdown report generation.
+
+  kulala-cli:
+    name: Kulala CLI
+    shortName: kulala CLI
+    author: Mistweaverco
+    type: cli
+    platform: CLI (requires Neovim + curl)
+    language: Lua
+    repo: https://github.com/mistweaverco/kulala-cli
+    description: >
+      CLI companion to kulala.nvim. GitHub Action available for CI pipelines.
+
+  httprun:
+    name: httprun
+    shortName: httprun
+    author: api1st
+    type: cli
+    platform: CLI
+    language: C#
+    repo: https://github.com/api1st/httprun
+    description: >
+      CLI targeting VS Code REST Client compatibility. Supports batch execution
+      of .http files with configurable timeouts and success codes.
+
+  dot-http:
+    name: dot-http
+    shortName: dot-http
+    author: bayne
+    type: cli
+    platform: CLI
+    language: Rust
+    repo: https://github.com/bayne/dot-http
+    description: >
+      Rust CLI with companion vim plugin.
+
+  http-request-in-editor:
+    name: http-request-in-editor
+    shortName: http-request-in-editor
+    author: char0n
+    type: parser
+    platform: Node.js
+    language: JavaScript
+    repo: https://github.com/char0n/http-request-in-editor
+    description: >
+      JavaScript reference parser implementing the JetBrains spec using nearley grammar.
+
+  http-rest-file:
+    name: http-rest-file
+    shortName: http-rest-file
+    author: Laeri
+    type: parser
+    platform: Rust
+    language: Rust
+    repo: https://github.com/Laeri/http-rest-file
+    description: >
+      Rust recursive descent parser/generator based on JetBrains syntax.
+
+  tree-sitter-http:
+    name: tree-sitter-http
+    shortName: tree-sitter-http
+    author: rest-nvim
+    type: parser
+    platform: Any (tree-sitter)
+    language: C/JavaScript
+    repo: https://github.com/rest-nvim/tree-sitter-http
+    description: >
+      Tree-sitter grammar for incremental parsing of .http files. Used by Neovim plugins.

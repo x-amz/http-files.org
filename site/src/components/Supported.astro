@@ -1,0 +1,46 @@
+---
+/**
+ * Inline badge showing which clients support a feature.
+ * Usage in Markdoc: {% supported clients="jetbrains,httpyac,kulala" /%}
+ */
+import yaml from 'js-yaml';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+	clients: string;
+}
+
+const { clients } = Astro.props;
+const clientIds = clients.split(',').map(s => s.trim());
+
+const clientsPath = path.resolve('src/data/clients.yaml');
+const clientsData = yaml.load(fs.readFileSync(clientsPath, 'utf8')) as any;
+---
+
+<span class="supported-badges">
+	{clientIds.map(id => {
+		const client = clientsData.clients[id];
+		const name = client?.shortName || id;
+		return <span class="supported-badge">{name}</span>;
+	})}
+</span>
+
+<style>
+	.supported-badges {
+		display: inline-flex;
+		gap: 0.3rem;
+		flex-wrap: wrap;
+	}
+
+	.supported-badge {
+		display: inline-block;
+		padding: 0.15rem 0.45rem;
+		border-radius: 4px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-gray-2);
+		white-space: nowrap;
+	}
+</style>

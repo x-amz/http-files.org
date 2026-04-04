@@ -1,0 +1,109 @@
+---
+title: Requests
+description: Request line syntax, headers, and body format across all implementations.
+---
+
+## Request line
+
+The request line is the first non-empty, non-comment line of a request block:
+
+```
+[Method] Request-URL [HTTP-Version]
+```
+
+{% interop level="universal" %}
+This format is supported by all implementations. Method defaults to `GET` when omitted.
+{% /interop %}
+
+### Supported methods
+
+The JetBrains spec formally defines: `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `CONNECT`, `PATCH`, `OPTIONS`, `TRACE`.
+
+VS Code REST Client extends this with WebDAV methods: `LOCK`, `UNLOCK`, `PROPFIND`, `PROPPATCH`, `COPY`, `MOVE`, `MKCOL`, `MKCALENDAR`, `ACL`, `SEARCH`.
+
+httpyac supports all of the above plus: `CHECKOUT`, `CHECKIN`, `REPORT`, `MERGE`, `MKACTIVITY`, `MKWORKSPACE`, `VERSION-CONTROL`, `BASELINE-CONTROL`.
+
+### HTTP version
+
+HTTP-Version is optional. Standard values are `HTTP/1.1` and `HTTP/2`. VS Code REST Client does not document HTTP/2 support.
+
+{% support-table category="core" /%}
+
+### Multi-line URLs
+
+All implementations except Visual Studio 2022 support line continuation for URLs via indentation. Continuation lines beginning with whitespace (space or tab) are concatenated to the request URL:
+
+```http
+GET https://example.com/api
+  /users
+  ?page=2
+  &limit=10
+```
+
+Query parameters can also be placed on separate lines starting with `?` or `&`.
+
+## Request headers
+
+Headers follow the request line, one per line, in `Field-Name: Field-Value` format. A blank line terminates the header section and begins the body.
+
+```http
+POST https://api.example.com/data
+Content-Type: application/json
+Authorization: Bearer mytoken123
+Accept: application/json
+
+{"key": "value"}
+```
+
+{% interop level="universal" %}
+Basic header syntax is universal across all implementations.
+{% /interop %}
+
+### Default headers
+
+VS Code REST Client automatically adds `User-Agent: vscode-restclient` and `Accept-Encoding: gzip` unless overridden (configurable via `rest-client.defaultHeaders`).
+
+### Multi-line header values
+
+{% supported clients="jetbrains,httpyac" /%}
+
+Header values can span multiple lines via indentation in JetBrains and httpyac.
+
+### Spread headers
+
+{% supported clients="httpyac" /%}
+
+httpyac uniquely supports a spread syntax: `...variableName` on a header line injects all key-value pairs from an object variable as headers.
+
+## Request body
+
+The body begins after the first blank line following headers. Everything after that blank line until the next request separator (`###`) or response handler (`>`) is the request body.
+
+```http
+POST https://api.example.com/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+{% interop level="universal" %}
+Request body syntax is universal.
+{% /interop %}
+
+### URL-encoded form body
+
+Form bodies with `Content-Type: application/x-www-form-urlencoded` can use multiple lines with `&` prefixes:
+
+```http
+POST https://api.example.com/login
+Content-Type: application/x-www-form-urlencoded
+
+username=admin
+&password=secret
+&remember=true
+```
+
+This multi-line form syntax is supported by all major implementations.

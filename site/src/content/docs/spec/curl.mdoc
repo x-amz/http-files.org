@@ -1,0 +1,30 @@
+---
+title: cURL Integration
+description: Importing cURL commands, exporting as cURL, and Postman collection import.
+---
+
+## Import (paste cURL into .http files)
+
+**VS Code REST Client** accepts cURL commands pasted directly into `.http` files and auto-parses them. Supported options: `-X`, `-H`, `-d`, `-u`, `-b`, `-I`, `-L`.
+
+**JetBrains** auto-converts pasted cURL to native `.http` syntax, keeping the original as a comment. Also provides a dialog for conversion.
+
+## Export (copy as cURL)
+
+**VS Code REST Client**: `Ctrl+Alt+C` or right-click -> "Copy Request As cURL".
+
+**JetBrains**: Right-click URL -> "Convert to cURL and Copy".
+
+## Postman import
+
+**JetBrains** can import Postman collection JSON files and convert them to `.http` files with optional environment attachment.
+
+**kulala.nvim** and kulala-fmt can import from Postman, OpenAPI, and Bruno collections.
+
+## Code generation
+
+{% supported clients="vscode" /%}
+
+VS Code REST Client can generate code in 30+ languages via the httpsnippet library. This is unique to VS Code REST Client.
+
+{% support-table category="curl" /%}

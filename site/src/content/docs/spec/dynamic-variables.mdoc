@@ -1,0 +1,71 @@
+---
+title: Dynamic Variables
+description: Built-in variables that generate values at request time — UUIDs, timestamps, random data.
+---
+
+Dynamic variables are prefixed with `$` inside `{{...}}` and generate values at request time. Implementations support different sets with different syntax.
+
+## Universally supported
+
+{% interop level="widespread" %}
+UUID, timestamp, and random integer are available in most major clients — but with syntax variations. VS 2022 does not document UUID generation.
+{% /interop %}
+
+{% syntax-example feature="uuid" /%}
+
+{% syntax-example feature="random-int" /%}
+
+## VS Code REST Client dynamic variables
+
+- `{{$guid}}` — UUID v4
+- `{{$randomInt min max}}` — random integer in `[min, max)` range
+- `{{$timestamp [offset unit]}}` — Unix timestamp with optional offset (e.g., `{{$timestamp -1 d}}`)
+- `{{$datetime format [offset unit]}}` — UTC datetime; formats: `rfc1123`, `iso8601`, or custom Day.js format
+- `{{$localDatetime format [offset unit]}}` — local timezone datetime
+- `{{$processEnv NAME}}` — OS environment variable
+- `{{$dotenv NAME}}` — value from `.env` file
+- `{{$aadToken [options]}}` — Azure AD v1 token
+- `{{$aadV2Token [options]}}` — Azure AD v2 / Microsoft Identity Platform token
+- `{{$oidcAccessToken [options]}}` — OpenID Connect token
+
+Offset units: `y` (year), `M` (month), `w` (week), `d` (day), `h` (hour), `m` (minute), `s` (second), `ms` (millisecond).
+
+## JetBrains dynamic variables
+
+- `{{$uuid}}` or `{{$random.uuid}}` — UUID v4
+- `{{$timestamp}}` — Unix timestamp
+- `{{$isoTimestamp}}` — ISO-8601 UTC timestamp
+- `{{$randomInt}}` — random integer 0-1000
+- `{{$random.integer(min, max)}}` — parameterized random integer
+- `{{$random.float(min, max)}}` — random float
+- `{{$random.alphabetic(length)}}` — random letters
+- `{{$random.alphanumeric(length)}}` — random letters, digits, underscores
+- `{{$random.hexadecimal(length)}}` — random hex string
+- `{{$random.email}}` — random email address
+- `{{$exampleServer}}` — IntelliJ built-in web server URL
+- `{{$projectRoot}}` — project root path
+
+Java Faker-based `$random.*` categories: `$random.name`, `$random.address`, `$random.company`, `$random.lorem`, `$random.commerce`, `$random.finance`, `$random.internet`, `$random.phoneNumber`, and many more.
+
+Localized random data: `{{$random.locale.name.fullName("fr")}}`
+
+OS environment variables: `{{$env.VARNAME}}`
+
+## httpyac dynamic variables
+
+httpyac supports both VS Code REST Client and JetBrains dynamic variable syntaxes. Additionally:
+
+- `{{$input prompt $value: default}}` — prompt user for input
+- `{{$password prompt}}` — prompt with masked input
+- `{{$pick prompt $value: opt1,opt2,opt3}}` — selection picker
+- `{{$input-askonce prompt}}` — prompt once, cache value
+
+All `{{...}}` expressions are evaluated as Node.js JavaScript, so `{{new Date().toISOString()}}` is valid.
+
+## Visual Studio 2022 dynamic variables
+
+- `{{$datetime format [offset]}}`, `{{$localDatetime format [offset]}}`, `{{$timestamp [offset]}}` — matching VS Code REST Client syntax
+- `{{$randomInt [min max]}}`
+- `{{$processEnv NAME}}`, `{{$dotenv NAME}}`
+
+{% support-table category="dynamic-variables" /%}

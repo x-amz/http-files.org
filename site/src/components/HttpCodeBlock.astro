@@ -1,0 +1,46 @@
+---
+/**
+ * HTTP syntax code block with optional title.
+ * Usage in Markdoc: {% http title="Basic GET" %} GET https://... {% /http %}
+ */
+interface Props {
+	title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="http-code-block">
+	{title && <div class="http-code-title">{title}</div>}
+	<pre class="http-code"><code><slot /></code></pre>
+</div>
+
+<style>
+	.http-code-block {
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 6px;
+		overflow: hidden;
+		margin: 1rem 0;
+	}
+
+	.http-code-title {
+		background: var(--sl-color-gray-6);
+		padding: 0.35rem 0.8rem;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--sl-color-gray-2);
+		border-bottom: 1px solid var(--sl-color-gray-5);
+	}
+
+	.http-code {
+		margin: 0;
+		padding: 0.8rem;
+		font-size: 0.85rem;
+		overflow-x: auto;
+		background: var(--sl-color-gray-7, var(--sl-color-bg));
+	}
+
+	.http-code code {
+		background: none;
+	}
+</style>

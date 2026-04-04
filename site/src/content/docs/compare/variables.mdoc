@@ -1,0 +1,42 @@
+---
+title: Variables & Environments Comparison
+description: How variable definition, scoping, environments, and dynamic variables differ across clients.
+---
+
+## Variables
+
+{% support-table category="variables" /%}
+
+## Dynamic variables
+
+{% support-table category="dynamic-variables" /%}
+
+## Key portability notes
+
+### Environment format
+
+The biggest portability challenge is environment configuration:
+
+- **VS Code REST Client** uses `settings.json` — not portable to any other client
+- **`http-client.env.json`** is the closest to a standard, supported by JetBrains, httpyac, VS 2022, and kulala.nvim
+- **`.env` files** are supported by httpyac and kulala.nvim
+- **httpyac** is the only bridge that supports all formats
+
+For maximum portability, use `http-client.env.json`.
+
+### Variable syntax
+
+`@var = value` and `{{var}}` are universal. Everything else has caveats:
+- Percent-encoding `{{%var}}` is VS Code only
+- Lazy variables `:=` are httpyac only
+- Faker random data `$random.name` is JetBrains only
+- Azure AD tokens `$aadToken` are VS Code only
+
+### Response chaining
+
+Three fundamentally different approaches:
+1. **VS Code REST Client**: declarative dot-path syntax (`{{name.response.body.$.jsonPath}}`)
+2. **JetBrains**: imperative scripts that store to global variables (`client.global.set()`)
+3. **httpyac**: `@ref` dependencies with automatic response-as-variable
+
+VS 2022 adopted the VS Code REST Client syntax. kulala.nvim supports the JetBrains approach.

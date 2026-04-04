@@ -1,0 +1,94 @@
+---
+title: Variables
+description: Variable definition, substitution, scoping, and response chaining across implementations.
+---
+
+## Inline variable definition
+
+Variables are defined directly in the `.http` file using the `@` prefix:
+
+```http
+@hostname = api.example.com
+@port = 8080
+@baseUrl = https://{{hostname}}:{{port}}
+```
+
+{% interop level="universal" %}
+The `@name = value` syntax is supported by all major implementations. Variables can reference other variables in their definitions.
+{% /interop %}
+
+Variable names must not contain spaces. VS Code REST Client requires a complete line per definition with whitespace trimmed.
+
+### Lazy variables
+
+{% supported clients="httpyac" /%}
+
+httpyac introduces a distinction between fixed variables (evaluated at parse time, using `=`) and lazy variables (evaluated at execution time, using `:=`):
+
+```http
+@eager = {{$timestamp}}
+@lazy := {{$timestamp}}
+```
+
+The eager variable captures the timestamp once when the file is parsed. The lazy variable generates a fresh timestamp each time it's used.
+
+## Variable substitution
+
+All implementations use double curly braces for variable substitution:
+
+```http
+GET https://{{hostname}}/api/{{version}}/users
+Authorization: Bearer {{token}}
+```
+
+{% interop level="universal" %}
+The `{{variableName}}` syntax is universal.
+{% /interop %}
+
+### Percent-encoding substitution
+
+{% supported clients="vscode" /%}
+
+VS Code REST Client supports `{{%variableName}}` which URL-encodes the variable value before substitution.
+
+## Variable scoping and precedence
+
+Variable resolution order differs between implementations:
+
+**VS Code REST Client** (highest to lowest):
+1. Request variables (named request responses)
+2. File variables (`@var = value`)
+3. Prompt variables (`@prompt`)
+4. Environment variables (from `settings.json`)
+
+**JetBrains** (highest to lowest):
+1. Per-request variables (set in pre-request scripts)
+2. In-place file variables (`@var = value`)
+3. Global variables (`client.global.set()`)
+4. Environment variables (from `http-client.env.json`)
+
+**httpyac** (highest to lowest):
+1. Request-scoped variables
+2. File-global variables
+3. Environment variables (from `.env`, `http-client.env.json`, or config files)
+
+## Named request variables (response chaining)
+
+Responses from named requests can be referenced as variables. The syntax differs significantly between implementations.
+
+{% syntax-example feature="named-request-variables" /%}
+
+**VS Code REST Client** uses dot-path notation with these reference patterns:
+- `{{name.response.body.$.jsonPath}}` — JSONPath into JSON response
+- `{{name.response.body.//xpathExpr}}` — XPath into XML response
+- `{{name.response.body.*}}` — entire response body
+- `{{name.response.headers.Header-Name}}` — response header value
+- `{{name.request.body.*}}` — original request body
+
+**JetBrains** uses response handler scripts to store values in global variables, then references them as `{{variableName}}`. There is no direct dot-path syntax.
+
+**httpyac** supports the `# @name` / `# @ref` pattern, where a named request's parsed response body becomes available as a variable.
+
+**Visual Studio 2022** (since v17.12) supports VS Code REST Client-style request variables.
+
+{% support-table category="variables" /%}

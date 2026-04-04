@@ -1,0 +1,22 @@
+---
+title: Parser Libraries
+description: Libraries for parsing .http files in your own tools.
+---
+
+## http-request-in-editor
+
+{% client-card id="http-request-in-editor" /%}
+
+JavaScript reference parser implementing the JetBrains spec using a nearley grammar. Useful for building tools that need to parse `.http` files in a Node.js environment.
+
+## http-rest-file
+
+{% client-card id="http-rest-file" /%}
+
+Rust recursive descent parser/generator based on JetBrains syntax. Generates `.http` files as well as parsing them.
+
+## tree-sitter-http
+
+{% client-card id="tree-sitter-http" /%}
+
+Tree-sitter grammar for incremental parsing of `.http` files. Used by Neovim plugins (rest.nvim, kulala.nvim). Provides fast, incremental, error-tolerant parsing suitable for editor integration.

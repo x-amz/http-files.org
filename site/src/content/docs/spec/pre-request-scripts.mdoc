@@ -1,0 +1,36 @@
+---
+title: Pre-Request Scripts
+description: Scripts that execute before a request is sent — dynamic variable setup, signing, and more.
+---
+
+## JetBrains pre-request scripts
+
+Pre-request scripts execute before the request is sent, allowing dynamic variable setup:
+
+{% syntax-example feature="pre-request-script" /%}
+
+### Request object API
+
+- `request.variables.set/get()` — read/write request-scoped variables
+- `request.environment.get()` — read environment variables
+- `request.body.getRaw()` — raw request body
+- `request.body.tryGetSubstituted()` — body with variables resolved
+- `request.url.getRaw()` — raw URL
+- `request.headers.all` — all headers
+- `request.method` — HTTP method
+
+### Crypto API
+
+JetBrains exposes a Crypto API: `crypto.hmac.sha256()`, `crypto.sha256()`, `crypto.sha512()`, etc. with chained methods for text/hex/base64 input and output.
+
+## httpyac pre-request scripts
+
+In httpyac, double-brace blocks positioned before the request line serve as pre-request scripts. Values exported via `exports.variableName` become available as variables. The `request` object is accessible for inspection.
+
+## VS Code REST Client and Visual Studio 2022
+
+Neither supports pre-request scripts.
+
+## kulala.nvim
+
+Supports JetBrains-compatible pre-request scripts in both JavaScript and Lua.

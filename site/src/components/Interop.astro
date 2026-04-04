@@ -1,0 +1,102 @@
+---
+/**
+ * Interoperability callout — highlights whether a feature is universal, widespread, limited, or unique.
+ * Usage in Markdoc: {% interop level="universal" %} Content {% /interop %}
+ */
+interface Props {
+	level: 'universal' | 'widespread' | 'limited' | 'unique';
+}
+
+const { level } = Astro.props;
+
+const labels: Record<string, string> = {
+	universal: 'Universal',
+	widespread: 'Widely Supported',
+	limited: 'Limited Support',
+	unique: 'Implementation-Specific',
+};
+
+const descriptions: Record<string, string> = {
+	universal: 'Supported identically by all major implementations.',
+	widespread: 'Supported by 3+ implementations, possibly with syntax variations.',
+	limited: 'Supported by 2 implementations.',
+	unique: 'Unique to a single implementation. Not portable.',
+};
+---
+
+<div class={`interop interop-${level}`}>
+	<div class="interop-header">
+		<span class="interop-indicator"></span>
+		<strong class="interop-label">{labels[level]}</strong>
+		<span class="interop-description">{descriptions[level]}</span>
+	</div>
+	<div class="interop-content">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.interop {
+		border-left: 3px solid;
+		border-radius: 0 6px 6px 0;
+		padding: 0.8rem 1rem;
+		margin: 1rem 0;
+	}
+
+	.interop-universal {
+		border-color: var(--neon-green, #39ff14);
+		background: rgba(57, 255, 20, 0.05);
+	}
+
+	.interop-widespread {
+		border-color: var(--neon-cyan, #00d4ff);
+		background: rgba(0, 212, 255, 0.05);
+	}
+
+	.interop-limited {
+		border-color: var(--neon-yellow, #ffe600);
+		background: rgba(255, 230, 0, 0.05);
+	}
+
+	.interop-unique {
+		border-color: var(--neon-magenta, #ff2dfd);
+		background: rgba(255, 45, 253, 0.05);
+	}
+
+	.interop-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.4rem;
+		flex-wrap: wrap;
+	}
+
+	.interop-indicator {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+	}
+
+	.interop-universal .interop-indicator { background: var(--neon-green, #39ff14); }
+	.interop-widespread .interop-indicator { background: var(--neon-cyan, #00d4ff); }
+	.interop-limited .interop-indicator { background: var(--neon-yellow, #ffe600); }
+	.interop-unique .interop-indicator { background: var(--neon-magenta, #ff2dfd); }
+
+	.interop-label {
+		font-size: 0.85rem;
+	}
+
+	.interop-description {
+		font-size: 0.78rem;
+		color: var(--sl-color-gray-3);
+	}
+
+	.interop-content {
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.interop-content :global(p:last-child) {
+		margin-bottom: 0;
+	}
+</style>

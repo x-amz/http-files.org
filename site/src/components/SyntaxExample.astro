@@ -1,0 +1,86 @@
+---
+/**
+ * Renders syntax examples for a feature, with per-client variants if they differ.
+ * Usage in Markdoc: {% syntax-example feature="uuid" /%}
+ * Data source: src/data/syntax-examples.yaml
+ */
+import yaml from 'js-yaml';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+	feature: string;
+}
+
+const { feature } = Astro.props;
+
+const syntaxPath = path.resolve('src/data/syntax-examples.yaml');
+let examples: any = {};
+if (fs.existsSync(syntaxPath)) {
+	examples = yaml.load(fs.readFileSync(syntaxPath, 'utf8')) as any;
+}
+
+const example = examples?.examples?.[feature];
+---
+
+{example ? (
+	<div class="syntax-example">
+		{example.universal && (
+			<div class="syntax-block">
+				<div class="syntax-label">All clients</div>
+				<pre><code>{example.universal}</code></pre>
+			</div>
+		)}
+		{example.variants && Object.entries(example.variants).map(([client, code]) => (
+			<div class="syntax-block">
+				<div class="syntax-label">{client}</div>
+				<pre><code>{code as string}</code></pre>
+			</div>
+		))}
+	</div>
+) : (
+	<div class="syntax-example-missing">
+		<em>Syntax example for "{feature}" not yet documented.</em>
+	</div>
+)}
+
+<style>
+	.syntax-example {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 1rem 0;
+	}
+
+	.syntax-block {
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	.syntax-label {
+		background: var(--sl-color-gray-6);
+		padding: 0.3rem 0.7rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--sl-color-gray-3);
+		border-bottom: 1px solid var(--sl-color-gray-5);
+	}
+
+	.syntax-block pre {
+		margin: 0;
+		padding: 0.7rem;
+		font-size: 0.85rem;
+		overflow-x: auto;
+	}
+
+	.syntax-block code {
+		background: none;
+	}
+
+	.syntax-example-missing {
+		color: var(--sl-color-gray-3);
+		font-size: 0.85rem;
+		margin: 0.5rem 0;
+	}
+</style>

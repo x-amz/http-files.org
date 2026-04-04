@@ -1,0 +1,194 @@
+# Syntax examples for features where clients differ.
+# Referenced by {% syntax-example feature="..." /%}
+
+examples:
+  uuid:
+    variants:
+      "VS Code REST Client": "{{$guid}}"
+      "JetBrains": "{{$uuid}} or {{$random.uuid}}"
+      "httpyac": "{{$guid}} or {{$uuid}}"
+
+  random-int:
+    variants:
+      "VS Code REST Client": "{{$randomInt 1 100}}"
+      "JetBrains": "{{$randomInt}} (0-1000) or {{$random.integer(1, 100)}}"
+      "httpyac": "Both syntaxes supported"
+
+  datetime:
+    variants:
+      "VS Code REST Client": "{{$datetime rfc1123}}\n{{$datetime iso8601}}\n{{$datetime 'YYYY-MM-DD'}}\n{{$localDatetime iso8601}}"
+      "JetBrains": "{{$isoTimestamp}}"
+
+  process-env:
+    variants:
+      "VS Code REST Client": "{{$processEnv HOME}}"
+      "JetBrains": "{{$env.HOME}}"
+
+  named-request-variables:
+    variants:
+      "VS Code REST Client": |
+        # @name login
+        POST https://api.example.com/auth
+        Content-Type: application/json
+
+        {"username": "admin", "password": "secret"}
+
+        ###
+        GET https://api.example.com/protected
+        Authorization: Bearer {{login.response.body.$.token}}
+      "JetBrains": |
+        POST https://api.example.com/auth
+        Content-Type: application/json
+
+        {"username": "admin", "password": "secret"}
+
+        > {%
+        client.global.set("auth_token", response.body.token);
+        %}
+
+        ###
+        GET https://api.example.com/protected
+        Authorization: Bearer {{auth_token}}
+      "httpyac": |
+        # @name login
+        POST https://api.example.com/auth
+
+        ###
+        # @ref login
+        GET https://api.example.com/protected
+        Authorization: Bearer {{login.token}}
+
+  graphql:
+    variants:
+      "VS Code REST Client": |
+        POST https://api.example.com/graphql
+        Content-Type: application/json
+        X-REQUEST-TYPE: GraphQL
+
+        query ($id: ID!) {
+          user(id: $id) { name email }
+        }
+
+        {"id": "123"}
+      "JetBrains": |
+        GRAPHQL https://api.example.com/graphql
+
+        query ($id: ID!) {
+          user(id: $id) { name email }
+        }
+
+        {"id": "123"}
+      "httpyac": |
+        POST https://api.example.com/graphql
+        Content-Type: application/json
+
+        gql MyQuery < ./query.gql
+
+        {"variable": "value"}
+
+  response-handler:
+    variants:
+      "JetBrains": |
+        GET https://api.example.com/users
+
+        > {%
+        client.test("Status is 200", function() {
+          client.assert(response.status === 200);
+        });
+        client.global.set("count", response.body.length);
+        %}
+      "httpyac (JetBrains compat)": |
+        GET https://api.example.com/users
+
+        > {%
+        client.test("Status is 200", function() {
+          client.assert(response.status === 200);
+        });
+        %}
+      "httpyac (native)": |
+        GET https://api.example.com/users
+
+        {{
+        const { equal } = require('assert');
+        test('status is 200', () => {
+          equal(response.statusCode, 200);
+        });
+        }}
+      "httpyac (assertions)": |
+        GET https://api.example.com/users
+
+        ?? status == 200
+        ?? header content-type includes json
+        ?? duration < 500
+
+  pre-request-script:
+    variants:
+      "JetBrains": |
+        < {%
+        const timestamp = Date.now();
+        request.variables.set("timestamp", timestamp);
+        %}
+
+        POST https://api.example.com/signed
+        X-Timestamp: {{timestamp}}
+      "httpyac": |
+        {{
+        const crypto = require('crypto');
+        exports.signature = crypto.createHmac('sha256', 'secret')
+          .update(request.method + request.url)
+          .digest('base64');
+        }}
+
+        GET https://api.example.com/resource
+        X-Signature: {{signature}}
+
+  websocket:
+    variants:
+      "JetBrains": |
+        WEBSOCKET ws://localhost:8080/ws
+
+        {"message": "Hello"}
+        ===
+        {"message": "World"}
+        === wait-for-server
+      "httpyac": |
+        WS ws://localhost:8080/ws
+
+        {{@streaming
+          async function writeMessage() {
+            await sleep(1000);
+            ws.send('Hello');
+          }
+          writeMessage();
+        }}
+
+  environments:
+    variants:
+      "VS Code REST Client (settings.json)": |
+        {
+          "rest-client.environmentVariables": {
+            "$shared": { "version": "v1" },
+            "development": { "host": "localhost:3000" },
+            "production": { "host": "api.example.com" }
+          }
+        }
+      "JetBrains (http-client.env.json)": |
+        {
+          "development": {
+            "host": "localhost:8080",
+            "username": "dev-user"
+          },
+          "production": {
+            "host": "api.example.com",
+            "username": "prod-user"
+          }
+        }
+      "httpyac (.env)": |
+        # .env
+        HOST=localhost:3000
+
+        # .env.development
+        HOST=localhost:8080
+
+        # Also supports http-client.env.json
+        # and httpyac.config.js

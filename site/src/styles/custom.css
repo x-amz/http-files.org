@@ -1,0 +1,213 @@
+/* http-files.org custom styles */
+/* Neon on true black — OLED-friendly dark mode */
+
+:root {
+	--sl-color-accent-low: #0a2540;
+	--sl-color-accent: #00d4ff;
+	--sl-color-accent-high: #7df3ff;
+	--sl-hue-accent: 190;
+	--sl-color-white: #f0f6fc;
+	--sl-color-gray-1: #d1d9e0;
+	--sl-color-gray-2: #9eaab6;
+	--sl-color-gray-3: #6b7d8d;
+	--sl-color-gray-4: #3d4f5f;
+	--sl-color-gray-5: #1c2a35;
+	--sl-color-gray-6: #0a0f14;
+	--sl-color-gray-7: #000000;
+	--sl-color-black: #000000;
+
+	--neon-green: #39ff14;
+	--neon-cyan: #00d4ff;
+	--neon-magenta: #ff2dfd;
+	--neon-yellow: #ffe600;
+	--neon-orange: #ff6b00;
+	--neon-purple: #bf5fff;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #d0f4ff;
+	--sl-color-accent: #0088aa;
+	--sl-color-accent-high: #004d66;
+	--sl-color-white: #0a0f14;
+	--sl-color-gray-1: #1c2a35;
+	--sl-color-gray-2: #3d4f5f;
+	--sl-color-gray-3: #6b7d8d;
+	--sl-color-gray-4: #9eaab6;
+	--sl-color-gray-5: #d1d9e0;
+	--sl-color-gray-6: #f0f4f8;
+	--sl-color-gray-7: #ffffff;
+	--sl-color-black: #ffffff;
+
+	--neon-green: #00901a;
+	--neon-cyan: #0077aa;
+	--neon-magenta: #b800b8;
+	--neon-yellow: #a39200;
+	--neon-orange: #cc5500;
+	--neon-purple: #7b2faf;
+}
+
+/* Logo — iOS file icon with rounded corners */
+.site-title img {
+	border-radius: 6px;
+}
+
+/* Title styling */
+[data-pagefind-meta='site-title'] {
+	font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+
+/* Hero section on landing page */
+.hero-http {
+	text-align: center;
+	padding: 3rem 1.5rem;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.hero-http h1 {
+	font-size: 2.8rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	margin-bottom: 0.5rem;
+}
+
+.hero-http h1 code {
+	color: var(--sl-color-accent);
+	background: none;
+	font-size: inherit;
+	padding: 0;
+}
+
+.hero-tagline {
+	font-size: 1.2rem;
+	color: var(--sl-color-gray-3);
+	max-width: 600px;
+	margin: 0.5rem auto 2rem;
+	line-height: 1.5;
+}
+
+.hero-example {
+	background: var(--sl-color-gray-7, var(--sl-color-bg));
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 8px;
+	text-align: left;
+	padding: 1.5rem;
+	margin: 2rem auto;
+	max-width: 580px;
+	font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	overflow-x: auto;
+}
+
+.hero-example .http-method {
+	color: var(--neon-green);
+	font-weight: 700;
+}
+
+.hero-example .http-url {
+	color: var(--neon-cyan);
+}
+
+.hero-example .http-header-name {
+	color: var(--neon-yellow);
+}
+
+.hero-example .http-header-value {
+	color: var(--sl-color-gray-2);
+}
+
+.hero-example .http-separator {
+	color: var(--sl-color-gray-4);
+}
+
+.hero-example .http-variable {
+	color: var(--neon-purple);
+}
+
+.hero-example .http-comment {
+	color: var(--sl-color-gray-4);
+	font-style: italic;
+}
+
+.hero-example .http-body {
+	color: var(--sl-color-gray-2);
+}
+
+.hero-actions {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin-top: 2rem;
+}
+
+.hero-actions a {
+	padding: 0.6rem 1.5rem;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.95rem;
+	transition: all 0.15s;
+}
+
+.hero-actions .primary {
+	background: var(--sl-color-accent);
+	color: var(--sl-color-black);
+}
+
+.hero-actions .primary:hover {
+	filter: brightness(1.15);
+}
+
+.hero-actions .secondary {
+	border: 1px solid var(--sl-color-gray-4);
+	color: var(--sl-color-gray-1);
+}
+
+.hero-actions .secondary:hover {
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-accent);
+}
+
+/* Stats banner */
+.stats-bar {
+	display: flex;
+	justify-content: center;
+	gap: 2.5rem;
+	padding: 1.5rem;
+	margin: 2rem 0;
+	flex-wrap: wrap;
+}
+
+.stat {
+	text-align: center;
+}
+
+.stat-number {
+	display: block;
+	font-size: 1.8rem;
+	font-weight: 800;
+	color: var(--sl-color-accent);
+}
+
+.stat-label {
+	font-size: 0.82rem;
+	color: var(--sl-color-gray-3);
+}
+
+/* Section headings on landing page */
+.section-heading {
+	text-align: center;
+	margin: 3rem 0 1.5rem;
+}
+
+.section-heading h2 {
+	font-size: 1.6rem;
+	margin-bottom: 0.3rem;
+}
+
+.section-heading p {
+	color: var(--sl-color-gray-3);
+	font-size: 0.95rem;
+}

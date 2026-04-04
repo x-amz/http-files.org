@@ -1,0 +1,29 @@
+---
+title: Neovim Plugins
+description: .http file support in Neovim — kulala.nvim, rest.nvim, and more.
+---
+
+## kulala.nvim
+
+{% client-card id="kulala" /%}
+
+The most comprehensive Neovim plugin for `.http` files, targeting 100% JetBrains HTTP Client compatibility. The kulala ecosystem includes:
+
+- **kulala.nvim** — the core Neovim plugin
+- **kulala-fmt** — formatter/linter for `.http` files, can import from Postman, OpenAPI, and Bruno
+- **kulala-ls** — language server for `.http` files
+- **Kulala CLI** — command-line runner with GitHub Action
+
+Supports JetBrains-style response handlers, Lua scripting, `http-client.env.json` environments, and `.env` files.
+
+## rest.nvim
+
+{% client-card id="rest-nvim" /%}
+
+Uses tree-sitter for parsing (via `tree-sitter-http`). Was archived but has been revived and is actively maintained again.
+
+## Other Neovim plugins
+
+- **resty.nvim** — Lua-native with shell command variables (`{{> ./script.sh}}`)
+- **nvim-http** (blacklight) — Python-based
+- **nvim-rest-client** (funkymcb) — Go-based, VS Code REST Client compatible

@@ -1,0 +1,62 @@
+---
+title: File Basics
+description: File extensions, encoding, and foundational conventions of the .http file format.
+---
+
+{% interop level="universal" %}
+The fundamentals described on this page are supported identically by all major implementations.
+{% /interop %}
+
+## File extensions
+
+All major implementations recognize `.http` as the primary file extension.
+
+`.rest` is recognized as an alias by VS Code REST Client, httpyac, Visual Studio 2022, and kulala.nvim. JetBrains HTTP Client uses `.http` exclusively in documentation but the IDE also recognizes `.rest`.
+
+## Encoding
+
+Files are assumed to be **UTF-8** unless otherwise specified. The JetBrains spec notes that request bodies are encoded per `Content-Type` header, defaulting to UTF-8.
+
+Non-ASCII characters in URLs are percent-encoded per RFC 3986. Implementations should not double-encode already-encoded characters.
+
+## Multiple requests per file
+
+All implementations support multiple requests in a single file, separated by request separators (`###`). Each request is independent and can be executed individually.
+
+```http
+GET https://api.example.com/users/1
+
+###
+
+POST https://api.example.com/users
+Content-Type: application/json
+
+{"name": "New User"}
+
+###
+
+DELETE https://api.example.com/users/2
+```
+
+See {% spec-ref section="3" /%} for details on separator syntax.
+
+## Structure of a request
+
+A request block consists of:
+
+1. **Request line** — method, URL, and optional HTTP version
+2. **Headers** — one per line, `Name: Value` format
+3. **Blank line** — separates headers from body
+4. **Body** — everything until the next `###` separator or response handler
+
+```http
+POST https://api.example.com/data
+Content-Type: application/json
+Authorization: Bearer mytoken123
+
+{
+  "key": "value"
+}
+```
+
+Each of these elements is covered in detail in {% spec-ref section="2" /%}.

@@ -1,0 +1,68 @@
+---
+title: Choose a Client
+description: Find the right .http file client for your editor, platform, and workflow.
+---
+
+## By editor
+
+### VS Code
+
+Two options, depending on your needs:
+
+{% client-grid %}
+{% client-card id="vscode" /%}
+{% client-card id="httpyac" /%}
+{% /client-grid %}
+
+**VS Code REST Client** is the originator of the format — straightforward, stable, well-documented. **httpyac** offers broader compatibility (supports both REST Client and JetBrains syntax) and adds scripting, assertions, and protocol extensions.
+
+### JetBrains IDEs
+
+{% client-grid %}
+{% client-card id="jetbrains" /%}
+{% /client-grid %}
+
+Built into IntelliJ IDEA, WebStorm, GoLand, PyCharm, Rider, and all other JetBrains IDEs. No extension to install.
+
+### Visual Studio
+
+{% client-grid %}
+{% client-card id="vs2022" /%}
+{% /client-grid %}
+
+Built into Visual Studio 2022 since v17.6. Supports the JetBrains environment format with Microsoft extensions.
+
+### Neovim
+
+{% client-grid %}
+{% client-card id="kulala" /%}
+{% client-card id="rest-nvim" /%}
+{% /client-grid %}
+
+**kulala.nvim** targets full JetBrains compatibility and includes a formatter, language server, and CLI. **rest.nvim** uses tree-sitter parsing.
+
+## By use case
+
+### CI/CD pipelines
+
+{% client-grid %}
+{% client-card id="ijhttp" /%}
+{% client-card id="httpyac-cli" /%}
+{% client-card id="kulala-cli" /%}
+{% /client-grid %}
+
+### Building tools that parse .http files
+
+{% client-grid %}
+{% client-card id="http-request-in-editor" /%}
+{% client-card id="http-rest-file" /%}
+{% client-card id="tree-sitter-http" /%}
+{% /client-grid %}
+
+## Compatibility at a glance
+
+If you want maximum portability, stick to the universal core syntax and use `http-client.env.json` for environments. See the [portability guide](/compare/portability/) for specific recommendations.
+
+If you want maximum features, **httpyac** supports the broadest feature set: both JetBrains and REST Client syntax, plus its own scripting, assertions, and protocol extensions.
+
+If you want the tightest IDE integration, use the **built-in client for your IDE** — JetBrains HTTP Client, Visual Studio 2022, or VS Code REST Client.

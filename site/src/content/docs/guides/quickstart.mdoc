@@ -1,0 +1,82 @@
+---
+title: Your First .http File
+description: Create and run your first HTTP request file in under two minutes.
+---
+
+## 1. Create a file
+
+Create a new file called `requests.http` in your project (or anywhere):
+
+```http
+### Hello world
+GET https://httpbin.org/get
+Accept: application/json
+```
+
+## 2. Open it in your editor
+
+If you're using **VS Code** with the REST Client extension, **any JetBrains IDE**, **Visual Studio 2022**, or **Neovim** with kulala.nvim or rest.nvim — the file will be recognized automatically.
+
+Look for a "Send Request" link or button above the `GET` line.
+
+## 3. Send the request
+
+Click "Send Request" (or use the keyboard shortcut — typically `Ctrl+Alt+R` in VS Code, `Ctrl+Enter` in JetBrains). The response appears in a side panel.
+
+## Adding variables
+
+```http
+@host = httpbin.org
+@accept = application/json
+
+### Get request with variables
+GET https://{{host}}/get
+Accept: {{accept}}
+
+### Post request
+POST https://{{host}}/post
+Content-Type: application/json
+
+{
+  "message": "Hello from a .http file",
+  "timestamp": "{{$timestamp}}"
+}
+```
+
+{% interop level="universal" %}
+Variable definition with `@var = value` and substitution with `{{var}}` work in all clients.
+{% /interop %}
+
+## Using environments
+
+For switching between dev and production, create an `http-client.env.json` file alongside your `.http` file:
+
+```json
+{
+  "development": {
+    "host": "localhost:3000",
+    "token": "dev-token-123"
+  },
+  "production": {
+    "host": "api.example.com",
+    "token": "prod-token-456"
+  }
+}
+```
+
+Then reference the variables in your requests:
+
+```http
+GET https://{{host}}/api/users
+Authorization: Bearer {{token}}
+```
+
+{% interop level="widespread" %}
+The `http-client.env.json` format is supported by JetBrains, httpyac, Visual Studio 2022, and kulala.nvim. VS Code REST Client uses `settings.json` instead.
+{% /interop %}
+
+## Next steps
+
+- Read the full [specification](/spec/basics/) to understand every feature
+- [Choose a client](/guides/choose-a-client/) for your platform
+- Browse the [compatibility reference](/compare/overview/) to see what works where

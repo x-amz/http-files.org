@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 32" fill="none">
+  <defs>
+    <linearGradient id="pageFace" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#e4e8ee"/>
+    </linearGradient>
+    <linearGradient id="foldFace" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eaecf0"/>
+    </linearGradient>
+    <linearGradient id="foldShadow" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-5%" width="120%" height="115%">
+      <feDropShadow dx="0" dy="0.5" stdDeviation="0.6" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <path d="M4 1 H18 L25 8 V28 Q25 31 22 31 H4 Q1 31 1 28 V4 Q1 1 4 1 Z"
+        fill="url(#pageFace)" filter="url(#shadow)"/>
+
+  <path d="M17 1 L25 9 H19 Q17 9 17 7 Z" fill="url(#foldShadow)"/>
+
+  <path d="M18 1 L25 8 H21 Q18 8 18 5 Z" fill="url(#foldFace)"/>
+
+  <path d="M18 1 L25 8" stroke="#c8cdd4" stroke-width="0.3" fill="none"/>
+  <path d="M25 8 H21 Q18 8 18 5" stroke="#c8cdd4" stroke-width="0.3" fill="none"/>
+
+  <text x="13" y="24" font-family="'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="6" font-weight="500" fill="#8e8e93" text-anchor="middle" letter-spacing="0.3">.http</text>
+</svg>

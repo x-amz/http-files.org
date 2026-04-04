@@ -1,0 +1,20 @@
+---
+title: Cookies
+description: Automatic cookie handling and cookie jar behavior.
+---
+
+All major implementations automatically handle cookies from `Set-Cookie` response headers.
+
+{% interop level="widespread" %}
+Cookie handling is automatic in all clients. The `# @no-cookie-jar` metadata tag is supported by VS Code REST Client, JetBrains, httpyac, and kulala.nvim. VS 2022 does not document this tag.
+{% /interop %}
+
+## Implementation details
+
+- **VS Code REST Client**: Cookies are remembered for subsequent requests (configurable via `rest-client.rememberCookiesForSubsequentRequests`, default `true`). Disable per-request with `# @no-cookie-jar`.
+
+- **JetBrains**: Cookies are stored in `http-client.cookies` (under `.idea/httpRequests/`), limited to 300 entries. Disable per-request with `// @no-cookie-jar`.
+
+- **httpyac**: Uses tough-cookie library for in-memory cookie jar. Configurable via `cookieJarEnabled` in `httpyac.config.js`. Disable per-request with `# @no-cookie-jar`.
+
+- **kulala.nvim**: Cookie jar supported, disable with `# @no-cookie-jar`.

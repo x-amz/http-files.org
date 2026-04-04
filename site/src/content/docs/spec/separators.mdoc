@@ -1,0 +1,79 @@
+---
+title: Separators & Comments
+description: Request separators and comment syntax in .http files.
+---
+
+## Request separators
+
+Three or more consecutive `#` characters (`###`) on a line separate requests within a file.
+
+{% interop level="universal" %}
+This is the single most universal syntax element — every known implementation supports it identically.
+{% /interop %}
+
+```http
+GET https://api.example.com/users/1
+
+###
+
+POST https://api.example.com/users
+Content-Type: application/json
+
+{"name": "New User"}
+
+###
+
+DELETE https://api.example.com/users/2
+```
+
+### Separator as title
+
+Text after `###` on the same line is treated as a comment or request title by JetBrains, httpyac, and kulala.nvim:
+
+```http
+### Get all users
+GET https://api.example.com/users
+
+### Create a new user
+POST https://api.example.com/users
+```
+
+{% supported clients="jetbrains,httpyac,kulala" /%}
+
+In httpyac, a global region (a region with `###` but no request line) applies its variables and metadata to all requests in the file.
+
+## Comments
+
+Two line-comment styles are universally supported:
+
+```http
+# This is a comment
+// This is also a comment
+```
+
+{% interop level="universal" %}
+Both `#` and `//` comments are recognized by VS Code REST Client, JetBrains, httpyac, Visual Studio 2022, and kulala.nvim.
+{% /interop %}
+
+### Block comments
+
+{% supported clients="httpyac" /%}
+
+httpyac additionally supports multi-line block comments:
+
+```
+/* This is a
+   multi-line comment */
+```
+
+This is unique to httpyac.
+
+### Comments as metadata
+
+Comments serve double duty as metadata annotations when they contain `@` directives. See {% spec-ref section="7" /%} for details.
+
+```http
+# @name myRequest
+# @no-redirect
+GET https://api.example.com/users
+```

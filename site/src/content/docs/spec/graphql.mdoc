@@ -1,0 +1,65 @@
+---
+title: GraphQL
+description: GraphQL support across .http file implementations.
+---
+
+GraphQL syntax differs significantly between implementations.
+
+{% syntax-example feature="graphql" /%}
+
+## VS Code REST Client
+
+Uses a `POST` method with a special `X-REQUEST-TYPE: GraphQL` header. The query is the body, separated from optional variables by a blank line:
+
+```http
+POST https://api.example.com/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query ($id: ID!) {
+  user(id: $id) { name email }
+}
+
+{"id": "123"}
+```
+
+## JetBrains HTTP Client
+
+Uses a dedicated `GRAPHQL` method keyword:
+
+```http
+GRAPHQL https://api.example.com/graphql
+
+query ($id: ID!) {
+  user(id: $id) { name email }
+}
+
+{"id": "123"}
+```
+
+JetBrains also supports GraphQL over WebSocket (`ws://` / `wss://` URLs). Live template shortcut: `gqlr`.
+
+## httpyac
+
+Automatically detects GraphQL queries in POST bodies (no special header required). Supports GraphQL fragments and importing queries from `.gql` files:
+
+```http
+POST https://api.example.com/graphql
+Content-Type: application/json
+
+gql MyQuery < ./query.gql
+
+{"variable": "value"}
+```
+
+httpyac auto-generates the proper `{"query": "...", "variables": {...}}` JSON envelope.
+
+## kulala.nvim
+
+Supports GraphQL through the `GRAPHQL` keyword (JetBrains-compatible).
+
+## Visual Studio 2022
+
+Does not support GraphQL.
+
+{% support-table category="protocols" /%}

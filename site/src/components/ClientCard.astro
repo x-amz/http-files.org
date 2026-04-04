@@ -1,0 +1,116 @@
+---
+/**
+ * Renders an info card for a specific client/implementation.
+ * Usage in Markdoc: {% client-card id="jetbrains" /%}
+ */
+import yaml from 'js-yaml';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+	id: string;
+}
+
+const { id } = Astro.props;
+
+const clientsPath = path.resolve('src/data/clients.yaml');
+const clientsData = yaml.load(fs.readFileSync(clientsPath, 'utf8')) as any;
+const client = clientsData.clients[id];
+
+if (!client) throw new Error(`Unknown client: ${id}`);
+
+const typeLabels: Record<string, string> = {
+	ide: 'IDE Extension',
+	cli: 'CLI Tool',
+	neovim: 'Neovim Plugin',
+	parser: 'Parser Library',
+};
+---
+
+<div class="client-card">
+	<div class="client-header">
+		<h3 class="client-name">{client.name}</h3>
+		<span class="client-type">{typeLabels[client.type] || client.type}</span>
+	</div>
+	<p class="client-description">{client.description}</p>
+	<div class="client-meta">
+		<span class="client-platform">{client.platform}</span>
+		{client.language && <span class="client-language">{client.language}</span>}
+	</div>
+	<div class="client-links">
+		{client.docs && <a href={client.docs} class="client-link">Docs</a>}
+		{client.repo && <a href={client.repo} class="client-link">Source</a>}
+		{client.cli && <a href={client.cli} class="client-link">CLI</a>}
+	</div>
+</div>
+
+<style>
+	.client-card {
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 8px;
+		padding: 1.2rem;
+		background: var(--sl-color-gray-7, var(--sl-color-bg));
+		transition: border-color 0.15s;
+	}
+
+	.client-card:hover {
+		border-color: var(--sl-color-gray-3);
+	}
+
+	.client-header {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.client-name {
+		margin: 0;
+		font-size: 1.1rem;
+	}
+
+	.client-type {
+		font-size: 0.72rem;
+		font-weight: 600;
+		padding: 0.15rem 0.4rem;
+		border-radius: 4px;
+		background: var(--sl-color-gray-5);
+		color: var(--sl-color-gray-2);
+		white-space: nowrap;
+	}
+
+	.client-description {
+		font-size: 0.88rem;
+		color: var(--sl-color-gray-2);
+		line-height: 1.5;
+		margin: 0.5rem 0;
+	}
+
+	.client-meta {
+		display: flex;
+		gap: 0.8rem;
+		font-size: 0.78rem;
+		color: var(--sl-color-gray-3);
+		margin-bottom: 0.6rem;
+	}
+
+	.client-links {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.client-link {
+		font-size: 0.8rem;
+		padding: 0.25rem 0.6rem;
+		border-radius: 4px;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-accent-high);
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	.client-link:hover {
+		background: var(--sl-color-accent);
+		color: var(--sl-color-bg);
+	}
+</style>

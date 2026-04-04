@@ -1,0 +1,94 @@
+---
+title: Environments
+description: Environment configuration formats across implementations — where they diverge most.
+---
+
+Environment configuration is where implementations diverge most significantly. Three major formats exist.
+
+{% syntax-example feature="environments" /%}
+
+## VS Code REST Client: settings.json
+
+Environments are defined in VS Code's `settings.json` under `rest-client.environmentVariables`:
+
+```json
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "version": "v1",
+      "prodToken": "foo"
+    },
+    "development": {
+      "host": "localhost:3000",
+      "token": "{{$shared prodToken}}"
+    },
+    "production": {
+      "host": "api.example.com",
+      "token": "real-prod-token"
+    }
+  }
+}
+```
+
+The special `$shared` environment provides variables available in all environments, overridable by specific environment values. Users switch environments via the VS Code status bar or `Ctrl+Alt+E`.
+
+## JetBrains: http-client.env.json
+
+JetBrains uses a standalone JSON file named `http-client.env.json` (intended for version control) paired with `http-client.private.env.json` (for secrets, excluded from VCS):
+
+```json
+{
+  "development": {
+    "host": "localhost:8080",
+    "username": "dev-user"
+  },
+  "production": {
+    "host": "api.example.com",
+    "username": "prod-user"
+  }
+}
+```
+
+Private file values override public file values for the same variable names. SSL configuration is also embedded in the private env file (see {% spec-ref section="16" /%}).
+
+JetBrains supports JSONPath-based nested variable access since 2024.2.
+
+## httpyac: multiple format support
+
+httpyac supports all of the above plus its own formats:
+
+- **`.env` files** (dotenv format) — `.env` for globals, `.env.local` or `local.env` for environment-specific
+- **`http-client.env.json`** — full JetBrains compatibility
+- **`httpyac.config.js`** (or `.httpyac.js`, `.httpyac.json`) — JavaScript/JSON config with `$shared`, `$default`, and named environments
+
+Searched in: current directory, project root, `env` subdirectory, and `HTTPYAC_ENV` path.
+
+httpyac allows multiple environments to be active simultaneously (`--env dev --env shared`).
+
+## Visual Studio 2022: http-client.env.json + .user
+
+Visual Studio 2022 adopted the JetBrains `http-client.env.json` format with a Microsoft-specific extension: `http-client.env.json.user` (excluded from source control). It also supports `$shared` (since v17.12).
+
+Uniquely, VS 2022 adds secrets providers within environment files:
+
+```json
+{
+  "development": {
+    "secret_key": {
+      "provider": "AzureKeyVault",
+      "secretName": "my-secret",
+      "resourceId": "/subscriptions/.../vaults/my-vault"
+    }
+  }
+}
+```
+
+Supported providers: ASP.NET Core User Secrets, Azure Key Vault, and DPAPI encryption (Windows).
+
+## kulala.nvim
+
+kulala.nvim supports both `http-client.env.json` (JetBrains-style) and `.env` files, aiming for full IntelliJ compatibility.
+
+## Comparison
+
+{% support-table category="variables" /%}

@@ -1,0 +1,44 @@
+---
+title: Core Syntax Comparison
+description: Feature-by-feature comparison of core .http syntax across all major clients.
+---
+
+The core syntax — request lines, headers, body, separators, and comments — is the most portable part of the `.http` format.
+
+{% support-table category="core" /%}
+
+## What's universal
+
+Every client supports:
+- `METHOD URL [HTTP-version]` request lines with `GET` as the default method
+- `Name: Value` headers terminated by a blank line
+- Request body after the blank line
+- `###` request separators
+- `#` and `//` line comments
+- `{{variableName}}` substitution
+- `@var = value` inline variable definitions
+
+## Key differences
+
+### Multi-line URLs
+
+All clients except Visual Studio 2022 support breaking long URLs across lines with indentation:
+
+```http
+GET https://example.com/api
+  /users
+  ?page=2
+  &limit=10
+```
+
+### HTTP versions
+
+`HTTP/2 (Prior Knowledge)` is JetBrains-only. `HTTP/3` is VS 2022-only.
+
+### Separator titles
+
+JetBrains, httpyac, and kulala.nvim treat text after `###` as a request title. VS Code REST Client and VS 2022 treat it as a comment.
+
+### Block comments
+
+Only httpyac supports `/* ... */` block comments.

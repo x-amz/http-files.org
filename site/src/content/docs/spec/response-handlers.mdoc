@@ -1,0 +1,72 @@
+---
+title: Response Handlers
+description: Inline scripts that execute after a response is received — testing, assertions, and variable extraction.
+---
+
+## JetBrains response handler syntax
+
+JetBrains introduced inline JavaScript response handlers placed after the request body using `>` followed by a script block. External script files can also be referenced: `> ./handler.js`
+
+{% syntax-example feature="response-handler" /%}
+
+### JavaScript API
+
+**`client` object:** `client.test(name, fn)`, `client.assert(condition, msg)`, `client.log(text)`, `client.global.set/get/clear/clearAll()`, `client.global.headers.set(name, value)`, `client.exit()`.
+
+**`response` object:** `response.body` (parsed JSON, XML DOM, or string), `response.status`, `response.headers.valueOf(name)`, `response.headers.valuesOf(name)`, `response.contentType.mimeType`, `response.contentType.charset`, `response.cookiesByName(name)`.
+
+Scripts use ECMAScript 2023.
+
+## httpyac script blocks
+
+httpyac uses double-brace blocks positioned after the request. Scripts have access to `response` (with `.statusCode`, `.headers`, `.body`, `.parsedBody`, `.timings`), full Node.js `require()`, and built-in `test()` and `sleep()` functions.
+
+httpyac also supports the JetBrains response handler syntax for compatibility.
+
+### Built-in test helpers
+
+httpyac provides convenience methods for common assertions:
+- `test.status(code)` — verify HTTP status code
+- `test.totalTime(ms)` — check request duration
+- `test.header(name, value)` — assert header value
+- `test.headerContains(name, value)` — assert header contains substring
+- `test.responseBody(content)` — assert exact body match
+- `test.hasResponseBody()` / `test.hasNoResponseBody()` — check body presence
+
+### Event-specific script hooks
+
+httpyac provides event-specific hooks: `@request` (runs after variable replacement, before sending), `@streaming` (runs during streaming connections), `@response` (runs on response receipt), `@responseLogging` (runs on response output), and `@after` (runs after all requests complete).
+
+### Global script registration
+
+Scripts can be registered to execute across all requests in a file using the `+` prefix. For example, a block with `+after` runs after every request. A block with just `+` runs before every request.
+
+## httpyac assertion syntax
+
+{% supported clients="httpyac" /%}
+
+A compact assertion syntax unique to httpyac:
+
+```http
+GET https://api.example.com/users
+
+?? status == 200
+?? header content-type includes json
+?? duration < 500
+?? body $.users[0].name == John
+?? js response.parsedBody.total > 0
+```
+
+Supported assertion types: `status`, `header`, `body`, `duration`, `js`, `xpath`.
+
+Operators: `==`, `!=`, `>`, `>=`, `<`, `<=`, `startsWith`, `endsWith`, `includes`/`contains`, `exists`, `matches`, `sha256`, `sha512`, `md5`.
+
+## kulala.nvim
+
+Supports both JetBrains-style response handler scripts and Lua scripting. Also provides built-in assert functions.
+
+## VS Code REST Client and Visual Studio 2022
+
+Neither supports response handler scripts or assertions. Response data is accessed only through named request variables.
+
+{% support-table category="scripting" /%}

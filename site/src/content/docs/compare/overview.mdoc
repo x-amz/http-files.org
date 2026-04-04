@@ -1,0 +1,35 @@
+---
+title: Compatibility Overview
+description: How .http file features compare across implementations — what's universal, what's unique.
+---
+
+The `.http` format has achieved remarkable organic adoption — at least 15 actively maintained tools parse and execute these files — yet it lacks a formal standard. Three layers of compatibility have emerged.
+
+{% interop level="universal" %}
+**Universal core** — request syntax, `###` separators, `#` and `//` comments, `{{variables}}`, `@var = value` definitions. Works identically everywhere.
+{% /interop %}
+
+{% interop level="widespread" %}
+**Widely supported** — environments (`http-client.env.json`), file includes (`< filepath`), metadata tags (`@name`, `@no-redirect`, `@no-cookie-jar`), auth helpers (Basic, Digest), dynamic variables (`$uuid`, `$timestamp`, `$randomInt`), multipart form data. Shared by most tools with minor syntax variations.
+{% /interop %}
+
+{% interop level="unique" %}
+**Implementation-specific** — scripting, assertions (`??`), protocol extensions (WebSocket, gRPC, MQTT, AMQP), import/run, Crypto API, Faker random data, Azure Key Vault secrets. Not portable without targeting a specific client.
+{% /interop %}
+
+## Comparison by category
+
+Explore feature-by-feature compatibility in each area:
+
+- [Core Syntax](/compare/core/) — request lines, headers, body, separators, comments
+- [Variables & Environments](/compare/variables/) — definition, substitution, environments, dynamic variables
+- [Scripting & Testing](/compare/scripting/) — response handlers, pre-request scripts, assertions
+- [Protocols & Extensions](/compare/protocols/) — GraphQL, WebSocket, gRPC, SSE, MQTT, AMQP
+- [Auth & Security](/compare/auth/) — authentication helpers, SSL, cookies
+- [Portability Guide](/compare/portability/) — how to write .http files that work everywhere
+
+## About this comparison
+
+This compatibility reference is maintained collaboratively. The data lives in structured YAML files that anyone can update via pull request.
+
+This is **not** a ranking. Every implementation makes different tradeoffs — broad IDE integration, maximum features, cross-client compatibility, or simplicity. The goal is to help you understand what your client supports and write portable `.http` files when that matters.

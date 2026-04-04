@@ -1,0 +1,61 @@
+---
+title: SSL & Certificates
+description: Client certificate configuration across implementations.
+---
+
+Each implementation uses a different format for SSL/TLS client certificate configuration.
+
+## VS Code REST Client
+
+Configured in `settings.json` under `rest-client.certificates`, keyed by hostname:
+
+```json
+{
+  "rest-client.certificates": {
+    "api.example.com": {
+      "cert": "/path/to/client.crt",
+      "key": "/path/to/client.key"
+    },
+    "secure.example.com:8443": {
+      "pfx": "/path/to/client.p12",
+      "passphrase": "password123"
+    }
+  }
+}
+```
+
+Supported properties: `cert`, `key` (PEM format), `pfx` (PKCS#12), `passphrase`.
+
+## JetBrains
+
+Configured within `http-client.private.env.json` via the `SSLConfiguration` key:
+
+```json
+{
+  "development": {
+    "SSLConfiguration": {
+      "clientCertificate": "cert.pem",
+      "clientCertificateKey": "key.pem",
+      "hasCertificatePassphrase": true,
+      "verifyHostCertificate": false
+    }
+  }
+}
+```
+
+Supports format specification (`PEM`, `DER`, `P12`) and disabling host certificate verification.
+
+## httpyac
+
+Configured in `httpyac.config.js`:
+
+```javascript
+module.exports = {
+  clientCertificates: {
+    "example.com": { cert: "./client.crt", key: "./client.key" },
+    "client.badssl.com": { pfx: "./client.p12", passphrase: "badssl.com" }
+  }
+}
+```
+
+httpyac also supports a per-request header: `ClientCert: pfx: ./client.p12 passphrase: badssl.com`. The metadata tag `# @no-client-cert` skips certificate for a specific request.

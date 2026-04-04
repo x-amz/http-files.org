@@ -1,0 +1,44 @@
+---
+title: CLI Tools
+description: Command-line tools for running .http files in CI/CD and automation.
+---
+
+## JetBrains ijhttp
+
+{% client-card id="ijhttp" /%}
+
+The official JetBrains CLI for running `.http` files. Requires JDK 21+. Available as a Docker image: `jetbrains/intellij-http-client`.
+
+Supports the full JetBrains HTTP Client feature set including pre-request scripts, response handlers, environments, and the Crypto API.
+
+## httpyac CLI
+
+{% client-card id="httpyac-cli" /%}
+
+Install via npm: `npm install -g httpyac`. Supports `--json` and `--junit` output formats, `--bail` for fail-fast, `--repeat` with parallel mode.
+
+The same broad compatibility as the httpyac VS Code extension — supports both JetBrains and REST Client syntax.
+
+## httprunner
+
+{% client-card id="httprunner" /%}
+
+Rust-based CLI with TUI and GUI modes. Supports both JetBrains and REST Client syntax, `http-client.env.json`, and HTML/Markdown report generation.
+
+## Kulala CLI
+
+{% client-card id="kulala-cli" /%}
+
+CLI companion to kulala.nvim. Requires Neovim and curl. GitHub Action available for CI pipelines.
+
+## httprun
+
+{% client-card id="httprun" /%}
+
+CLI targeting VS Code REST Client compatibility. Supports batch execution of `.http` files.
+
+## dot-http
+
+{% client-card id="dot-http" /%}
+
+Rust CLI with companion vim plugin.

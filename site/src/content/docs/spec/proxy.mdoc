@@ -1,0 +1,27 @@
+---
+title: Proxy
+description: HTTP proxy configuration across implementations.
+---
+
+## VS Code REST Client
+
+Uses VS Code's built-in `http.proxy` and `http.proxyStrictSSL` settings. Supports HTTP/HTTPS proxies. Excluded hosts configured via `rest-client.excludeHostsForProxy`.
+
+## JetBrains
+
+Uses IDE proxy settings (Settings -> Appearance & Behavior -> System Settings -> HTTP Proxy).
+
+## httpyac
+
+Per-request via metadata:
+
+```http
+# @proxy http://localhost:8888
+GET https://api.example.com/data
+```
+
+Or per-environment via `request_proxy` variable in env files or `httpyac.config.js`.
+
+## kulala.nvim
+
+Inherits system/Neovim proxy configuration.

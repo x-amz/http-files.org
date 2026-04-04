@@ -1,0 +1,55 @@
+---
+title: Clients & Tools Overview
+description: Every known .http file implementation — IDEs, CLIs, Neovim plugins, and parser libraries.
+---
+
+The `.http` file format is supported by at least 15 actively maintained tools. This page catalogs every known implementation.
+
+## IDE extensions and built-in support
+
+{% client-grid %}
+{% client-card id="vscode" /%}
+{% client-card id="jetbrains" /%}
+{% client-card id="httpyac" /%}
+{% client-card id="vs2022" /%}
+{% /client-grid %}
+
+## Neovim plugins
+
+{% client-grid %}
+{% client-card id="kulala" /%}
+{% client-card id="rest-nvim" /%}
+{% /client-grid %}
+
+## CLI tools
+
+{% client-grid %}
+{% client-card id="ijhttp" /%}
+{% client-card id="httpyac-cli" /%}
+{% client-card id="httprunner" /%}
+{% client-card id="kulala-cli" /%}
+{% client-card id="httprun" /%}
+{% client-card id="dot-http" /%}
+{% /client-grid %}
+
+## Parser libraries
+
+{% client-grid %}
+{% client-card id="http-request-in-editor" /%}
+{% client-card id="http-rest-file" /%}
+{% client-card id="tree-sitter-http" /%}
+{% /client-grid %}
+
+## Related but distinct tools
+
+These tools are sometimes confused with `.http` file tools but use different formats:
+
+- **Hurl** (Orange OpenSource) uses `.hurl` files — a completely different syntax with `[Captures]`, `[Asserts]`, `[Options]` sections. Not compatible with `.http` format.
+- **Microsoft HttpRepl** is an interactive REPL, not a file format.
+- **Bruno** uses its own `.bru` file format.
+
+## The specification
+
+The only semi-formal specification is JetBrains' "HTTP Request in Editor" spec at [JetBrains/http-request-in-editor-spec](https://github.com/JetBrains/http-request-in-editor-spec). It defines a context-free grammar covering request lines, headers, bodies, file includes, multipart forms, response handlers, response references, and environment variable placeholders.
+
+However, it has multiple TODO sections and does not cover: request naming, in-file variables (`@var`), dynamic variables, pre-request scripts, metadata tags, cookie handling, WebSocket/gRPC, GraphQL, import/run, or any other post-2018 features. No IETF RFC exists for this format.

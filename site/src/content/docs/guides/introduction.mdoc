@@ -1,0 +1,81 @@
+---
+title: What are .http files?
+description: An introduction to the .http file format — plain text HTTP requests that work everywhere.
+---
+
+A `.http` file is a plain text file containing one or more HTTP requests, written in a syntax that closely mirrors the HTTP protocol itself. You write the method, URL, headers, and body — then your editor or CLI tool sends it.
+
+## Origins
+
+The format originated with the **VS Code REST Client** extension by Huachao Mao around 2017. It was independently adopted and extended by **JetBrains** for IntelliJ-based IDEs, then implemented by **httpyac**, **Visual Studio 2022**, **kulala.nvim**, and many others.
+
+JetBrains published the only semi-formal specification on GitHub ([JetBrains/http-request-in-editor-spec](https://github.com/JetBrains/http-request-in-editor-spec)), but it remains incomplete and has not kept pace with any implementation.
+
+## A simple example
+
+```http
+GET https://httpbin.org/get
+Accept: application/json
+```
+
+That's a complete `.http` file. Save it, open it in a supported editor, and you can execute the request directly.
+
+## Multiple requests in one file
+
+Use `###` to separate requests:
+
+```http
+### Get users
+GET https://api.example.com/users
+
+### Create user
+POST https://api.example.com/users
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com"
+}
+
+### Delete user
+DELETE https://api.example.com/users/42
+```
+
+Each request is independent and can be executed individually.
+
+## Beyond the basics
+
+The core syntax is simple, but the format supports much more:
+
+- **Variables and environments** for switching between dev/staging/prod ({% spec-ref section="4" /%})
+- **Response chaining** to pass data between requests ({% spec-ref section="4" /%})
+- **Scripting and assertions** for API testing ({% spec-ref section="12" /%})
+- **GraphQL, WebSocket, and gRPC** support in some clients ({% spec-ref section="18" /%})
+
+Not all features are supported by all clients. The [compatibility reference](/compare/overview/) tracks exactly what works where.
+
+## Why not Postman/Insomnia/curl?
+
+`.http` files complement these tools rather than replacing them:
+
+- **vs. Postman/Insomnia**: `.http` files are plain text, version-controllable, reviewable in PRs, and don't require a proprietary app or account.
+- **vs. curl**: `.http` files are more readable for multi-step workflows, support variables and environments, and integrate directly into your editor.
+- **vs. OpenAPI/Swagger**: `.http` files are for *executing* requests, not *describing* APIs. They're what you reach for when testing, debugging, or demonstrating.
+
+## The state of standardization
+
+There is no RFC or formal standard for `.http` files. The format is a de facto standard that emerged from convergent implementation. This site aims to document the complete feature set across all implementations and serve as the neutral reference for the format going forward.
+
+Three layers of compatibility exist:
+
+{% interop level="universal" %}
+**Universal core** — request syntax, `###` separators, `#` and `//` comments, `{{variables}}`, `@var = value` definitions. Works identically everywhere.
+{% /interop %}
+
+{% interop level="widespread" %}
+**Widely supported** — environments, file includes, metadata tags, auth helpers. Shared by most tools, sometimes with syntax variations.
+{% /interop %}
+
+{% interop level="unique" %}
+**Implementation-specific** — scripting, assertions, protocol extensions, import/run. Not portable without targeting a specific client.
+{% /interop %}

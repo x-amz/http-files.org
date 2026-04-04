@@ -1,0 +1,55 @@
+---
+/**
+ * Cross-reference to a spec section.
+ * Usage in Markdoc: {% spec-ref section="4" /%}
+ */
+interface Props {
+	section: string;
+}
+
+const { section } = Astro.props;
+
+const sectionMap: Record<string, { title: string; slug: string }> = {
+	'1': { title: 'File Basics', slug: '/spec/basics/' },
+	'2': { title: 'Requests', slug: '/spec/requests/' },
+	'3': { title: 'Separators & Comments', slug: '/spec/separators/' },
+	'4': { title: 'Variables', slug: '/spec/variables/' },
+	'5': { title: 'Environments', slug: '/spec/environments/' },
+	'6': { title: 'Dynamic Variables', slug: '/spec/dynamic-variables/' },
+	'7': { title: 'Metadata & Annotations', slug: '/spec/metadata/' },
+	'8': { title: 'Authentication', slug: '/spec/auth/' },
+	'9': { title: 'File Includes', slug: '/spec/file-includes/' },
+	'10': { title: 'Multipart & Uploads', slug: '/spec/multipart/' },
+	'11': { title: 'GraphQL', slug: '/spec/graphql/' },
+	'12': { title: 'Response Handlers', slug: '/spec/response-handlers/' },
+	'13': { title: 'Pre-Request Scripts', slug: '/spec/pre-request-scripts/' },
+	'14': { title: 'Response Saving', slug: '/spec/response-saving/' },
+	'15': { title: 'Cookies', slug: '/spec/cookies/' },
+	'16': { title: 'SSL & Certificates', slug: '/spec/ssl/' },
+	'17': { title: 'Proxy', slug: '/spec/proxy/' },
+	'18': { title: 'Protocols', slug: '/spec/protocols/' },
+	'19': { title: 'Imports & Cross-File', slug: '/spec/imports/' },
+	'20': { title: 'cURL Integration', slug: '/spec/curl/' },
+};
+
+const ref = sectionMap[section];
+---
+
+{ref ? (
+	<a href={ref.slug} class="spec-ref">Section {section}: {ref.title}</a>
+) : (
+	<span class="spec-ref-unknown">Section {section}</span>
+)}
+
+<style>
+	.spec-ref {
+		font-size: 0.85rem;
+		font-weight: 500;
+		text-decoration: none;
+		color: var(--sl-color-accent-high);
+	}
+
+	.spec-ref:hover {
+		text-decoration: underline;
+	}
+</style>
