@@ -17,13 +17,37 @@ export default defineConfig({
 				replacesTitle: false,
 			},
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/http-files' },
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/x-amz/http-files.org' },
 			],
 			customCss: ['./src/styles/custom.css'],
 			head: [
 				{
 					tag: 'meta',
-					attrs: { name: 'theme-color', content: '#4a9eff' },
+					attrs: { name: 'theme-color', content: '#00d4ff' },
+				},
+				{
+					tag: 'meta',
+					attrs: { property: 'og:image', content: 'https://http-files.org/og-image.png' },
+				},
+				{
+					tag: 'meta',
+					attrs: { name: 'twitter:image', content: 'https://http-files.org/og-image.png' },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
 				},
 			],
 			sidebar: [
