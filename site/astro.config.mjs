@@ -5,8 +5,7 @@ import markdoc from '@astrojs/markdoc';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://x-amz.github.io',
-	base: '/http-files.org',
+	site: 'https://http-files.org',
 	integrations: [
 		markdoc(),
 		starlight({
