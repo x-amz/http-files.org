@@ -7,9 +7,15 @@ A `.http` file is a plain text file containing one or more HTTP requests, writte
 
 ## Origins
 
-The format originated with the **VS Code REST Client** extension by Huachao Mao around 2017. It was independently adopted and extended by **JetBrains** for IntelliJ-based IDEs, then implemented by **httpyac**, **Visual Studio 2022**, **kulala.nvim**, and many others.
+The `.http` file format was created by **[Huachao Mao](https://github.com/Huachao)**, a senior engineer at Alibaba Cloud. His [REST Client extension for VS Code](https://github.com/Huachao/vscode-restclient) — first released on March 31, 2016 — introduced the idea of writing HTTP requests as plain text in your editor and running them directly. The concept was simple and immediately useful: no external tool, no GUI, just a text file that speaks HTTP.
 
-JetBrains published the only semi-formal specification on GitHub ([JetBrains/http-request-in-editor-spec](https://github.com/JetBrains/http-request-in-editor-spec)), but it remains incomplete and has not kept pace with any implementation.
+The extension grew steadily from a basic request sender into a full-featured HTTP workbench. By late 2016, Mao had added the `###` separator for multiple requests per file, establishing the syntax pattern that every subsequent implementation would adopt. Today the extension has over 7 million installs.
+
+The format's appeal was evident enough that **JetBrains** independently adopted and significantly extended it for IntelliJ-based IDEs, adding scripting, response handlers, and protocol support. JetBrains also published the only semi-formal [specification](https://github.com/JetBrains/http-request-in-editor-spec) — though it remains incomplete and has not kept pace with any implementation, including their own.
+
+**httpyac**, **Visual Studio 2022**, **kulala.nvim**, and many others followed. Each brought their own extensions, but the core idea — Mao's idea — remains: a plain text file that describes an HTTP request in a syntax anyone who knows HTTP can read.
+
+Everything on this site builds on that foundation.
 
 ## A simple example
 
