@@ -120,6 +120,7 @@ clients:
     platform: CLI, TUI, GUI
     language: Rust
     repo: https://github.com/chelle-helle/httprunner
+    docs: https://github.com/chelle-helle/httprunner#readme
     description: >
       Rust-based CLI/TUI/GUI supporting both JetBrains and REST Client syntax,
       http-client.env.json, and HTML/Markdown report generation.
